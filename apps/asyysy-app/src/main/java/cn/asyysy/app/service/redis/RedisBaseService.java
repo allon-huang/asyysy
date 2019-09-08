@@ -1,4 +1,4 @@
-package cn.asyysy.app.redis;
+package cn.asyysy.app.service.redis;
 
 
 public interface RedisBaseService {

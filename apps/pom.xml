@@ -12,6 +12,7 @@
         <module>asyysy-common</module>
         <module>asyysy-app</module>
         <module>asyysy-message</module>
+        <module>asyysy-api</module>
     </modules>
 
 

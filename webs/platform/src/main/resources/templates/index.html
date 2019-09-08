@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+    <h1>www.asyysy.cn</h1>
+    <p>
+        asyysy.cn
+    </p>
+
+
+    <table border="1">
+        <tr>
+            <th>主键</th>
+            <th>类型</th>
+            <th>关键字</th>
+            <th>回复内容</th>
+            <th>次数</th>
+            <th>时间</th>
+        </tr>
+        <tr  th:each="wx,wxStat : ${list}">
+            <td th:text="${wx.pkid}"></td>
+            <td th:text="${wx.type}"></td>
+            <td th:text="${wx.keyword}"></td>
+            <th th:text="${wx.replyText}"></th>
+            <th th:text="${wx.sendSum}"></th>
+            <th th:text="${wx.createTime}"></th>
+        </tr>
+    </table>
+</body>
+</html>

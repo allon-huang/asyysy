@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.asyysy.app.mapper.user.WxReplyModelMapper" >
+
+    <resultMap id="BaseResultMapWxReplyModel" type="cn.asyysy.app.model.WxReplyModel" >
+        <id column="pkid" property="pkid" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+        <result column="reply_text" property="replyText" jdbcType="VARCHAR" />
+        <result column="send_sum" property="sendSum" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+    </resultMap>
+
+    <sql id="Base_Column_List_WxReplyModel" >
+        pkid, type, keyword,reply_text,send_sum, create_time
+    </sql>
+    <sql id="Base_Column_List_Un_Pkid_WxReplyModel" >
+       type, keyword,reply_text,ifnull(send_sum,0), create_time
+    </sql>
+
+   <select id="selectWxReplyModelByKeyword" resultMap="BaseResultMapWxReplyModel" parameterType="java.lang.String">
+       select
+        <include refid="Base_Column_List_WxReplyModel"></include>
+       from wx_reply_model
+       where instr(keyword,#{keyword})>0
+   </select>
+
+    <select id="selectWxReplyModelList" resultMap="BaseResultMapWxReplyModel" >
+        select
+        <include refid="Base_Column_List_WxReplyModel"></include>
+        from wx_reply_model
+    </select>
+
+    <update id="updateReplyModelSendTime" parameterType="java.lang.Long">
+        update wx_reply_model set send_sum = ifNull(send_sum,0) + 1 where pkid = #{pkid}
+    </update>
+</mapper>

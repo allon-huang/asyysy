@@ -5,9 +5,6 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
-/**
- * 获取系统网卡MAC地址
- */
 public class MacAddressAPI {
     /**
      * 获取当前操作系统名称. return 操作系统名称 例如:windows xp,linux 等.

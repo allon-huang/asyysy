@@ -1,9 +1,9 @@
-package cn.asyysy.app.redis.impl;
+package cn.asyysy.app.service.redis.impl;
 
-import cn.asyysy.app.redis.RedisBaseService;
+import cn.asyysy.app.service.redis.RedisBaseService;
 import cn.asyysy.common.config.SystemInfo;
 import cn.asyysy.consts.BaseConsts;
-import cn.asyysy.model.short_url.ShortUrl;
+import cn.asyysy.app.model.short_url.ShortUrl;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

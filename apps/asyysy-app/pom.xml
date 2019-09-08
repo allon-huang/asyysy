@@ -10,21 +10,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>asyysy-app</artifactId>
+
     <build>
-<!--
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
--->
     </build>
-
+       <!--
+        Idea中实现接口的方法上无法添加@Override注解的原因及解决
+        ————————————————
+        版权声明：本文为CSDN博主「Java小张」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+        原文链接：https://blog.csdn.net/weixin_43464964/article/details/86480497-->
     <dependencies>
         <dependency>
             <groupId>cn.asyysy.asyysy</groupId>
@@ -67,6 +71,12 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
+        </dependency>
+        <!--mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>2.3</version>
         </dependency>
 
     </dependencies>

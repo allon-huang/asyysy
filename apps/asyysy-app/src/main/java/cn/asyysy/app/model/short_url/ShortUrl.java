@@ -1,4 +1,4 @@
-package cn.asyysy.model.short_url;
+package cn.asyysy.app.model.short_url;
 
 import lombok.Data;
 
