@@ -1,7 +1,7 @@
 package cn.asyysy.app.redis.impl;
 
 import cn.asyysy.app.redis.RedisBaseService;
-import cn.asyysy.common.config.SystemConfigUtil;
+import cn.asyysy.common.config.SystemInfo;
 import cn.asyysy.consts.BaseConsts;
 import cn.asyysy.model.short_url.ShortUrl;
 import com.alibaba.fastjson.JSON;
@@ -9,11 +9,16 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 
-/*@Service("redisBaseService")*/
-@Service()
+@Service("redisBaseService")
 public class RedisBaseServiceImpl implements RedisBaseService {
+    /**
+     * 系统对应配置
+     */
+    @Autowired
+    SystemInfo systemConfig;
     /**
      redis
      */
@@ -39,7 +44,7 @@ public class RedisBaseServiceImpl implements RedisBaseService {
     public void saveShortUrl(String longUrl) {
         // 获取随机字符串
         String shortCode= RandomStringUtils.randomAlphanumeric(10);
-        String shortUrl = SystemConfigUtil.get().getShortUrlDoamin() + shortCode;
+        String shortUrl = systemConfig.SHORT_URL_DOAMIN + shortCode;
         ShortUrl dao = new ShortUrl();
         dao.setShortUrl(shortUrl);
         dao.setPathUrl(shortCode);

@@ -11,6 +11,8 @@
 
     <artifactId>asyysy-common</artifactId>
     <dependencies>
+
+        <!--多个modules项目不可循环引-->
         <!--<dependency>
             <groupId>cn.asyysy.asyysy</groupId>
             <artifactId>asyysy-app</artifactId>
@@ -24,6 +26,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
+            <version>5.1.9.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>5.1.9.RELEASE</version>
         </dependency>
     </dependencies>
