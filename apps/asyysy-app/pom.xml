@@ -3,27 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>asyysy</artifactId>
+        <artifactId>apps</artifactId>
         <groupId>cn.asyysy.asyysy</groupId>
         <version>1.0-SNAPSHOT</version>
+        <!--https://www.cnblogs.com/liaojie970/p/8806843.html
+            设定一个空值将始终从仓库中获取，不从本地路径获取，如<relativePath />
+            Maven parent.relativePath
+            默认值为../pom.xml
+            查找顺序：relativePath元素中的地址–本地仓库–远程仓库
+        -->
+      <!--  <relativePath>../pom.xml</relativePath>-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
 
     <artifactId>asyysy-app</artifactId>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
        <!--
         Idea中实现接口的方法上无法添加@Override注解的原因及解决
         ————————————————
@@ -34,13 +28,8 @@
             <groupId>cn.asyysy.asyysy</groupId>
             <artifactId>asyysy-common</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>cn.asyysy.asyysy</groupId>
-            <artifactId>asyysy-message</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
