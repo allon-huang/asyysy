@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 /**
  * @author admin
  */
-@Component
 public class ApiUserIntercepter extends HandlerInterceptorAdapter {
 
     Logger logger = Logger.getLogger("ApiUserIntercepter");

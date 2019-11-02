@@ -4,39 +4,31 @@ import cn.asyysy.app.model.WxReplyModel;
 import cn.asyysy.app.service.redis.RedisBaseService;
 import cn.asyysy.app.service.user.WxMainService;
 import cn.asyysy.app.service.user.WxReplyModelService;
-import cn.asyysy.common.JsonResult;
 import cn.asyysy.common.SendmailUtil;
 import cn.asyysy.common.config.SystemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
-//@RequestMapping("")
+/**
+ * @author hyy21
+ */
+@Controller
 public class IndexController {
-
     /**
      * 系统对应配置
      */
     @Autowired
     private SystemInfo systemInfo;
-
-    @RequestMapping("index1")
-    public Object index () {
-        System.out.println(systemInfo.SHORT_URL_DOAMIN);
-        return new JsonResult(1,"哈哈");
-    }
-
 
     Logger logger = Logger.getLogger("IndexController");
     @Autowired
@@ -59,7 +51,7 @@ public class IndexController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "indexJson")
+    @RequestMapping(value = "/indexJson")
     public Object indexJson(@RequestParam Map<String,Object> params,HttpServletRequest request){
         DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         logger.info("==============================MainController=====调用时间" + format1.format(new Date()) + "=indexJson=========params：" + params.toString());
@@ -76,7 +68,7 @@ public class IndexController {
      * @param content 邮件正文内容
      * @return
      */
-    @RequestMapping(value = "mail")
+    @RequestMapping(value = "/mail")
     @ResponseBody
     public Object mail(@RequestParam("mail") String mail, @RequestParam("title")String title, @RequestParam("content")String content){
         DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

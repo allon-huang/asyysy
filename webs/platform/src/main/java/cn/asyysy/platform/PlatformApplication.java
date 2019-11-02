@@ -24,8 +24,8 @@ import org.springframework.web.WebApplicationInitializer;
 @ComponentScan(basePackages={"cn.asyysy.app.service","cn.asyysy.platform.config"})
 public class PlatformApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
 
-    /*intellij下将springboot项目打成war包发布到远程tomcat服务器上   需  extends SpringBootServletInitializer implements WebApplicationInitializer start*/
     @Override
+    /*intellij下将springboot项目打成war包发布到远程tomcat服务器上   需  extends SpringBootServletInitializer implements WebApplicationInitializer start*/
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application){
         return application.sources(PlatformApplication.class);
     }
