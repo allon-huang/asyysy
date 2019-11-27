@@ -21,7 +21,7 @@ import org.springframework.web.WebApplicationInitializer;
  *
  * https://blog.csdn.net/a532672728/article/details/77702772/
  */
-@ComponentScan(basePackages={"cn.asyysy.app.service","cn.asyysy.platform.config"})
+@ComponentScan(basePackages={"cn.asyysy"})
 public class PlatformApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
 
     @Override
