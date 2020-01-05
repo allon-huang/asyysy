@@ -33,14 +33,10 @@ public class IndexController extends BaseController {
     private WxReplyModelService wxReplyModelService;
 
     @Autowired
-    private RedisBaseService redisBaseService;
-    @Autowired
     private Environment env;
 
     @RequestMapping(value = "index")
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {
-        logger.info("==============================MainController===============params：{}",
-                params.toString());
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
         logger.info("wx_token:{}", env.getProperty("wx_token"));

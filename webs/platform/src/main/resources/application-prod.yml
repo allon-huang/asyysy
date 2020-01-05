@@ -8,7 +8,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     password: 123123112233
-    url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai
     username: root
   redis:
     hostName: 127.0.0.1

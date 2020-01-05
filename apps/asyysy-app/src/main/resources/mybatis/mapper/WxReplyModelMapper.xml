@@ -8,7 +8,7 @@
         <result column="keyword" property="keyword" jdbcType="VARCHAR" />
         <result column="reply_text" property="replyText" jdbcType="VARCHAR" />
         <result column="send_sum" property="sendSum" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List_WxReplyModel" >
