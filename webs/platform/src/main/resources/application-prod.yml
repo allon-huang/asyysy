@@ -1,0 +1,19 @@
+domain:
+  short-url: http://d.asyysy.cn
+server:
+  port: 80
+  servlet:
+    context-path: /asyysy_core
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    password: 123123112233
+    url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+  redis:
+    hostName: 127.0.0.1
+    port: 6379
+    timeout: 300
+  thymeleaf:
+    cache: true
+wx_token: hyy210381

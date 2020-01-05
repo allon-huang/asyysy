@@ -1,6 +1,6 @@
 package cn.asyysy.app.intercepter;
 
-import cn.asyysy.common.JwtUtil;
+import cn.asyysy.app.common.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

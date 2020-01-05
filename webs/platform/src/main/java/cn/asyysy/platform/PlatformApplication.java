@@ -4,8 +4,13 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
@@ -35,4 +40,19 @@ public class PlatformApplication extends SpringBootServletInitializer implements
         SpringApplication.run(PlatformApplication.class, args);
     }
 
+    /**
+     * Spring Boot2.0以上版本EmbeddedServletContainerCustomizer被WebServerFactoryCustomizer<ConfigurableWebServerFactory>替代
+     * https://www.jianshu.com/p/b973476ccfd6
+     * @return
+     */
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> containerCustomizer() {
+        return (container -> {
+            ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
+            ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/errorPage/404");
+            ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
+
+            container.addErrorPages(error401Page, error404Page, error500Page);
+        });
+    }
 }

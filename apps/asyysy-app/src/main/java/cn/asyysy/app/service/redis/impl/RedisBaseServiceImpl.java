@@ -1,8 +1,7 @@
 package cn.asyysy.app.service.redis.impl;
 
+import cn.asyysy.app.common.config.SystemInfo;
 import cn.asyysy.app.service.redis.RedisBaseService;
-import cn.asyysy.common.config.SystemInfo;
-import cn.asyysy.consts.BaseConsts;
 import cn.asyysy.app.model.short_url.ShortUrl;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.RandomStringUtils;
@@ -31,8 +30,10 @@ public class RedisBaseServiceImpl implements RedisBaseService {
      * @return
      */
     @Override
-    public Object get(String key) {
-        return redisTemplate.opsForValue().get(key);
+    public ShortUrl get(String key) {
+        String tempKey = "D_" + key;
+        Object obj = redisTemplate.opsForValue().get(tempKey);
+        return null == obj ? null : JSON.parseObject(obj.toString(), ShortUrl.class);
     }
 
     /**
@@ -44,13 +45,13 @@ public class RedisBaseServiceImpl implements RedisBaseService {
     public void saveShortUrl(String longUrl) {
         // 获取随机字符串
         String shortCode= RandomStringUtils.randomAlphanumeric(10);
-        String shortUrl = systemConfig.SHORT_URL_DOAMIN + shortCode;
+        String shortUrl = "D_" + shortCode;
         ShortUrl dao = new ShortUrl();
         dao.setShortUrl(shortUrl);
         dao.setPathUrl(shortCode);
         dao.setRedirctTime(0L);
         dao.setCDate(new Date());
         dao.setLongUrl(longUrl);
-        redisTemplate.opsForValue().set(BaseConsts.REDIS_KEY.SHORT_URL + shortCode, JSON.toJSONString(dao));
+        redisTemplate.opsForValue().set("D_" + shortCode, JSON.toJSONString(dao));
     }
 }

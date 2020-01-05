@@ -2,13 +2,13 @@ package cn.asyysy.api.wechat;
 
 
 
+import cn.asyysy.app.common.wechat.CheckoutUtil;
+import cn.asyysy.app.common.wechat.MessageUtil;
 import cn.asyysy.app.model.WxMessage;
 import cn.asyysy.app.model.WxReplyModel;
 import cn.asyysy.app.model.wechat.TextMeaasge;
 import cn.asyysy.app.service.user.WxMainService;
 import cn.asyysy.app.service.user.WxReplyModelService;
-import cn.asyysy.common.wechat.CheckoutUtil;
-import cn.asyysy.common.wechat.MessageUtil;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

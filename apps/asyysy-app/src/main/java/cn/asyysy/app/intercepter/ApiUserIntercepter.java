@@ -1,9 +1,8 @@
 package cn.asyysy.app.intercepter;
 
-import cn.asyysy.common.JsonResult;
-import cn.asyysy.consts.BaseConsts;
+import cn.asyysy.app.common.JsonResult;
+import cn.asyysy.app.consts.BaseConsts;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -33,7 +32,7 @@ public class ApiUserIntercepter extends HandlerInterceptorAdapter {
                 logger.info("------:正在跳转到login页面...");
                 response.sendRedirect(request.getContextPath()+"/index");
             }*/
-            response.sendError(JsonResult.ERROR,BaseConsts.MSG.UN_ON_LINE);
+            response.sendError(JsonResult.ERROR, BaseConsts.MSG.UN_ON_LINE);
             return false;
         }
         return true;

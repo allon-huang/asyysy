@@ -1,6 +1,6 @@
 package cn.asyysy.platform.config;
 
-import cn.asyysy.common.config.SystemInfo;
+import cn.asyysy.app.common.config.SystemInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

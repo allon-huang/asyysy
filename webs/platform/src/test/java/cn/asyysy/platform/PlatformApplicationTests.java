@@ -1,6 +1,6 @@
 package cn.asyysy.platform;
 
-import cn.asyysy.common.MacAddressAPI;
+import cn.asyysy.app.common.MacAddressAPI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

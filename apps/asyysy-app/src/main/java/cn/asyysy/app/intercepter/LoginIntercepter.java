@@ -1,12 +1,12 @@
 package cn.asyysy.app.intercepter;
 
 
-import cn.asyysy.annotation.PassToken;
-import cn.asyysy.annotation.UserToken;
+import cn.asyysy.app.annotation.PassToken;
+import cn.asyysy.app.annotation.UserToken;
+import cn.asyysy.app.common.JsonResult;
+import cn.asyysy.app.common.token.TokenUtil;
+import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.service.user.UserService;
-import cn.asyysy.common.JsonResult;
-import cn.asyysy.common.token.TokenUtil;
-import cn.asyysy.consts.BaseConsts;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class LoginIntercepter extends HandlerInterceptorAdapter {
                 //执行认证
                 if(StringUtils.isEmpty(token)){
                     //throw new RuntimeException(Constants.MSG.UN_LOGIN_TOKEN);
-                    response.sendError(JsonResult.ERROR,BaseConsts.MSG.UN_LOGIN_TOKEN);
+                    response.sendError(JsonResult.ERROR, BaseConsts.MSG.UN_LOGIN_TOKEN);
                     return false;
                 }else {
                     //获取token中的用户信息
@@ -76,7 +76,7 @@ public class LoginIntercepter extends HandlerInterceptorAdapter {
                         //throw new RuntimeException(Constants.MSG.UNDEFIND_LOGIN_USER);
                     }*/
                     if(StringUtils.isEmpty(userName)){
-                        response.sendError(JsonResult.ERROR,BaseConsts.MSG.UNDEFIND_LOGIN_USER);
+                        response.sendError(JsonResult.ERROR, BaseConsts.MSG.UNDEFIND_LOGIN_USER);
                         return false;
                     }
                     request.setAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY,userName);

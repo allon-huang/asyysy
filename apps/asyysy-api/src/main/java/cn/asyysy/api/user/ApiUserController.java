@@ -1,15 +1,15 @@
 package cn.asyysy.api.user;
 
 
-import cn.asyysy.annotation.PassToken;
-import cn.asyysy.annotation.UserToken;
+import cn.asyysy.app.annotation.PassToken;
+import cn.asyysy.app.annotation.UserToken;
+import cn.asyysy.app.common.JsonResult;
+import cn.asyysy.app.common.token.TokenUtil;
+import cn.asyysy.app.consts.BaseConsts;
+import cn.asyysy.app.exception.BaseException;
+import cn.asyysy.app.listener.SessionListener;
 import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.service.user.UserService;
-import cn.asyysy.common.JsonResult;
-import cn.asyysy.common.token.TokenUtil;
-import cn.asyysy.consts.BaseConsts;
-import cn.asyysy.exception.BaseException;
-import cn.asyysy.listener.SessionListener;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.jsonwebtoken.Claims;
@@ -247,7 +247,7 @@ public class ApiUserController {
             claims = TokenUtil.parseJWT(token);
             return new JsonResult(JsonResult.SUCCESS,"退出登录成功", claims.getId());
         }catch (BaseException e){
-            return new JsonResult(JsonResult.ERROR,BaseConsts.MSG.PLEASE_LOGIN,"业务异常:" +  e.getMessage());
+            return new JsonResult(JsonResult.ERROR, BaseConsts.MSG.PLEASE_LOGIN,"业务异常:" +  e.getMessage());
         }catch (ExpiredJwtException e){
             return new JsonResult(JsonResult.ERROR,BaseConsts.MSG.PLEASE_LOGIN,"401,token失效:" +  e.getMessage());
         }catch (Exception e){
