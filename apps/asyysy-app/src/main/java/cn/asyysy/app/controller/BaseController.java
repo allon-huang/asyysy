@@ -6,6 +6,10 @@ import org.springframework.core.env.Environment;
 
 import java.util.logging.Logger;
 
+/**
+ * 基础Controller
+ * @author hyy
+ */
 public class BaseController {
     Logger logger = Logger.getLogger("BaseController");
 
@@ -18,13 +22,11 @@ public class BaseController {
     @Autowired
     private Environment env;
 
-    SystemInfo getSystem(){
-        logger.info("获取系统参数:" + systemInfo);
+    public SystemInfo systemInfo(){
         return systemInfo;
     }
 
-    Environment getEnv(){
-        logger.info("获取系统env参数:" + env);
+    public Environment environment(){
         return env;
     }
 }

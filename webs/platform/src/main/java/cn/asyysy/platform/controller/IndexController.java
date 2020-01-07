@@ -3,8 +3,6 @@ package cn.asyysy.platform.controller;
 import cn.asyysy.app.common.SendmailUtil;
 import cn.asyysy.app.controller.BaseController;
 import cn.asyysy.app.model.WxReplyModel;
-import cn.asyysy.app.service.redis.RedisBaseService;
-import cn.asyysy.app.service.user.WxMainService;
 import cn.asyysy.app.service.user.WxReplyModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +26,13 @@ public class IndexController extends BaseController {
     /** log日志. */
     private static Logger logger = (Logger) LoggerFactory.getLogger(IndexController.class);
     @Autowired
-    private WxMainService wxMainService;
-    @Autowired
     private WxReplyModelService wxReplyModelService;
-
-    @Autowired
-    private Environment env;
 
     @RequestMapping(value = "index")
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
-        logger.info("wx_token:{}", env.getProperty("wx_token"));
+        logger.info("wx_token:{}", environment().getProperty("wx_token"));
         return  "index";
     }
 
@@ -51,7 +44,7 @@ public class IndexController extends BaseController {
                 , format1.format(new Date()), params.toString());
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
-        logger.info("wx_token:{}", env.getProperty("wx_token"));
+        logger.info("wx_token:{}", environment().getProperty("wx_token"));
         return  wxReplys;
     }
 

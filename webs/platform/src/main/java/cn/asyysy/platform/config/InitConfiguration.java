@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 系统配置初始化配置
+ * @author hyy
  */
 @Configuration
 public class InitConfiguration {
