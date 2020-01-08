@@ -4,29 +4,30 @@ import cn.asyysy.app.common.SendmailUtil;
 import cn.asyysy.app.controller.BaseController;
 import cn.asyysy.app.model.WxReplyModel;
 import cn.asyysy.app.service.user.WxReplyModelService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author hyy21
  */
 @Controller
 public class IndexController extends BaseController {
-    /** log日志. */
-    private static Logger logger = (Logger) LoggerFactory.getLogger(IndexController.class);
-    @Autowired
-    private WxReplyModelService wxReplyModelService;
+    /*@Autowired
+    private WxReplyModelService wxReplyModelService;*/
+
+    private final WxReplyModelService wxReplyModelService;
+
+    public IndexController(WxReplyModelService wxReplyModelService) {
+        this.wxReplyModelService = wxReplyModelService;
+    }
 
     @RequestMapping(value = "index")
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {

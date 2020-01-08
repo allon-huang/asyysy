@@ -34,6 +34,12 @@ public class ErrorController {
     @RequestMapping(value = "/404")
     public String notFound() {
         log.warn("没有找到对应的信息");
-        return "404";
+        return "error/404";
+    }
+
+    @RequestMapping(value = "/500")
+    public String error() {
+        log.warn("error");
+        return "error/500";
     }
 }

@@ -1,1 +1,5 @@
 /.idea/
+/apps/asyysy-api/target/
+/apps/asyysy-app/target/
+/apps/asyysy-common/target/
+/webs/platform/target/
