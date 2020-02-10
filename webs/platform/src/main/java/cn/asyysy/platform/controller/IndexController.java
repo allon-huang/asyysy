@@ -1,9 +1,17 @@
 package cn.asyysy.platform.controller;
 
 import cn.asyysy.app.common.SendmailUtil;
+import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.controller.BaseController;
-import cn.asyysy.app.model.WxReplyModel;
+import cn.asyysy.app.model.short_url.ShortUrl;
+import cn.asyysy.app.model.wechat.WxConfig;
+import cn.asyysy.app.model.wechat.WxReplyModel;
+import cn.asyysy.app.service.redis.RedisBaseService;
+import cn.asyysy.app.service.short_url.ShortUrlService;
 import cn.asyysy.app.service.user.WxReplyModelService;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,20 +28,32 @@ import java.util.Map;
  */
 @Controller
 public class IndexController extends BaseController {
-    /*@Autowired
-    private WxReplyModelService wxReplyModelService;*/
 
-    private final WxReplyModelService wxReplyModelService;
+    @Autowired
+    private  WxReplyModelService wxReplyModelService;
 
-    public IndexController(WxReplyModelService wxReplyModelService) {
-        this.wxReplyModelService = wxReplyModelService;
-    }
+    @Autowired
+    private RedisBaseService redisBaseService;
 
-    @RequestMapping(value = "index")
+    @Autowired
+    private ShortUrlService shortUrlService;
+
+    @RequestMapping(value = "*")
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {
+        // 微信回复模板
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
-        logger.info("wx_token:{}", environment().getProperty("wx_token"));
+        EntityWrapper ew = new EntityWrapper();
+        ew.setEntity(new ShortUrl());
+        // 短网址
+        request.setAttribute("shortUrlList", shortUrlService.selectList(ew));
+        // 系统信息
+        request.setAttribute("sys", systemInfo());
+        // 新型肺炎数据
+        request.setAttribute("ncpData", commonService.ncpApi());
+        // 微信配置
+        Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
+        request.setAttribute("wxConfig", (null == wxConfig) ? null: JSON.parseObject(wxConfig.toString(), WxConfig.class));
         return  "index";
     }
 
@@ -45,7 +65,6 @@ public class IndexController extends BaseController {
                 , format1.format(new Date()), params.toString());
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
-        logger.info("wx_token:{}", environment().getProperty("wx_token"));
         return  wxReplys;
     }
 

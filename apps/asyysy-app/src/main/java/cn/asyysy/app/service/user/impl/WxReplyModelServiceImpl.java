@@ -2,7 +2,7 @@ package cn.asyysy.app.service.user.impl;
 
 import cn.asyysy.app.mapper.user.WxReplyModelMapper;
 import cn.asyysy.app.service.user.WxReplyModelService;
-import cn.asyysy.app.model.WxReplyModel;
+import cn.asyysy.app.model.wechat.WxReplyModel;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

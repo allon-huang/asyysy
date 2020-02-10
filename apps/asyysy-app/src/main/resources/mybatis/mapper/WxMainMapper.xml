@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.asyysy.app.mapper.user.WxMainMapper" >
 
-    <resultMap id="BaseResultMapWxMain" type="cn.asyysy.app.model.WxMessage" >
+    <resultMap id="BaseResultMapWxMain" type="cn.asyysy.app.model.wechat.WxMessage" >
         <id column="pkid" property="pkid" jdbcType="INTEGER" />
         <result column="open_id" property="openId" jdbcType="VARCHAR" />
         <result column="message" property="message" jdbcType="VARCHAR" />
@@ -17,10 +17,5 @@
     <sql id="Base_Column_List_Un_Pkid_WxMessage" >
         open_id, message,all_message, type,date
     </sql>
-    <insert id="inserCharge" parameterType="cn.asyysy.app.model.WxMessage">
-        insert into
-        arge(<include refid="Base_Column_List_Un_Pkid_WxMessage" /> )
-        values(#{openId},#{message},#{allMessage},#{type},#{date})
-    </insert>
 
 </mapper>

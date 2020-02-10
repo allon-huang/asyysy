@@ -32,3 +32,5 @@ spring:
   thymeleaf:
     encoding: UTF-8
     mode: HTML5
+  jmx:
+    enabled: false

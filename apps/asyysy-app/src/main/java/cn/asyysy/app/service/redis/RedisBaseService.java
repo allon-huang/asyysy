@@ -1,20 +1,39 @@
 package cn.asyysy.app.service.redis;
 
 
-import cn.asyysy.app.model.short_url.ShortUrl;
-
 public interface RedisBaseService {
     /**
      * 根据key获取obj
      * @param key
      * @return
      */
-    ShortUrl get(String key);
+    Object get(String key);
 
     /**
-     * 保持短网址到redis
-     * @param longUrl
+     * 保存数据到redis
+     * @param key redis key
+     * @param obj value
      */
-    void saveShortUrl(String longUrl);
+    void set(String key, Object obj);
 
+    /**
+     * 保存数据到redis（有超时时间）
+     * @param key
+     * @param obj
+     * @param ttl
+     */
+    void set(String key, Object obj , int ttl);
+
+    /**
+     * redis 删除数据
+     * @param key
+     */
+    void delete(String key);
+
+    /**
+     * key是否存在
+     * @param key
+     * @return
+     */
+    Boolean hasKey(String key);
 }

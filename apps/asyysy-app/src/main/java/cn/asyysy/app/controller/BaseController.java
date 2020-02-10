@@ -1,5 +1,6 @@
 package cn.asyysy.app.controller;
 
+import cn.asyysy.app.service.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cn.asyysy.app.common.config.SystemInfo;
@@ -16,6 +17,9 @@ public class BaseController {
      */
     public static Logger logger = (Logger) LoggerFactory.getLogger(BaseController.class);
 
+    @Autowired
+    public CommonService commonService;
+    
     /**
      * 系统对应配置
      */
@@ -29,7 +33,9 @@ public class BaseController {
         return systemInfo;
     }
 
-    public Environment environment(){
+    public Environment environment() {
         return env;
     }
+
+
 }

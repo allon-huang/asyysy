@@ -13,6 +13,17 @@ public class BaseConsts {
          * 短网址redis的key
          */
         public final static String SHORT_URL = "D_ASYYSY_D_";
+
+        /**
+         * 新型冠状病毒数据
+         */
+        public final static String NCP_DATA = "NCP_DATA";
+
+        /**
+         * 微信信息
+         */
+        public final static String WX_INFO = "WX_INFO";
+
     }
 
     /**

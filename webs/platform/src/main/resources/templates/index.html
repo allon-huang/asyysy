@@ -2,37 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>index</title>
-<!--    <link src="">-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="referrer" content="never">
+    <title>黄猿帅-[[${sys.domain }]]</title>
+    <script th:src="@{/static/js/jquery.min.js}" ></script>
+    <script th:src="@{/static/js/echarts.min.js}"></script>
+    <script th:src="@{/static/js/china.js}"></script>
+    <script th:src="@{/static/js/echarts-gl.js}"></script>
+    <script th:src="@{/static/js/common/common.js}"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <style>
-
         body{
-            background-color: #6C496F;
+            /*background-color: #6C496F;*/
+            margin: 0 auto;
+        }
+
+        .margin_top_20{
+            margin-top: 20px;
+        }
+
+        .ncp_chart{
+            width: 380px;
+            height:350px;
+        }
+
+        .centent {
+            margin: 0 auto;
+            text-align: center;
+            display:inline-block
         }
     </style>
+
+    <script>
+        /**
+         * api 文档说明http://tianqiapi.com/index/doc?version=epidemic
+         * @type {string}
+         */
+        // api版本号
+        var version = "[[${sys.ncpApiVersion}]]";
+        // api appid
+        var appid = "[[${sys.weatherAppid}]]";
+        // api appsecret
+        var appsecret = "[[${sys.weatherAppSecret}]]";
+        var api2019_nCoV_api = "[[${sys.ncpApiUrl}]]?version=" + version +"&appid=" +appid +"&appsecret="+appsecret;
+
+        $(function(){
+            // 新冠病毒
+            ncpFun();
+            // 微信
+            wxFun();
+        })
+        function wxFun() {
+            var jsApiList = ['onMenuShareAppMessage'];
+            wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: '[[${sys.wxAppid}]]', // 必填，公众号的唯一标识
+                    timestamp: '[[${wxConfig.timestamp}]]', // 必填，生成签名的时间戳
+                    nonceStr: '[[${wxConfig.nonceStr}]]', // 必填，生成签名的随机串
+                    signature: '[[${wxConfig.signature}]]',// 必填，签名
+                    jsApiList: jsApiList // 必填，需要使用的JS接口列表
+                });
+                
+                // 分享给朋友
+                wx.onMenuShareAppMessage({
+                    title: '黄猿帅', // 分享标题
+                    desc: '[[${sys.domain}]]/', // 分享描述
+                    link: '[[${sys.domain}]]/[[${#httpServletRequest.getContextPath()}]]/index', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: '', // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户点击了分享后执行的回调函数
+                    }
+                });
+            });
+            wx.checkJsApi({
+                jsApiList: jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function(res) {
+                    // 以键值对的形式返回，可用的api值true，不可用为false
+                    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                }
+            });
+        }
+
+        
+
+        /**
+         * 新冠病毒
+         */
+        function ncpFun() {
+            var dataStr = '[[${ncpData}]]';
+            // 反转义
+            dataStr = oppositeMeaning(dataStr);
+            var data = JSON.parse(dataStr);
+            var html = "";
+            html += "确诊：" + data.data.diagnosed + "/新增"+ data.data.diagnosedIncr+"（重症：" + data.data.serious + "/新增" + data.data.seriousIncr + "）例";
+            html += "<br>疑似：" + data.data.suspect + "/新增" + data.data.suspectIncr + "例";
+            html += "<br>死亡：" + data.data.death + "/新增" + data.data.deathIncr + "例";
+            html += "<br>治愈：" + data.data.cured + "/新增" + data.data.curedIncr + "例";
+            html += "<br>数据更新时间：" + data.data.date;
+            $("#ncpInfo").html(html);
+
+            //  确诊病例
+            var dataListConfirmed = new Array();
+            // 治愈病例
+            var dataListCured = new Array();
+            // 死亡病例
+            var dataListDead = new Array();
+            var tempNanhai = new Object();
+            tempNanhai.name = "南海诸岛";
+            tempNanhai.value = 0;
+            dataListConfirmed.push(tempNanhai);
+            dataListCured.push(tempNanhai);
+            dataListDead.push(tempNanhai);
+            $.each(data.data.area,function(index, item) {
+                //  确诊病例
+                var obj = new Object();
+                obj.name = item.provinceShortName;
+                obj.value = item.confirmedCount;
+                dataListConfirmed.push(obj);
+                // 治愈病例
+                obj = new Object();
+                obj.name = item.provinceShortName;
+                obj.value = item.curedCount;
+                dataListCured.push(obj);
+                obj = new Object();
+                // 死亡病例
+                obj.name = item.provinceShortName;
+                obj.value = item.deadCount;
+                dataListDead.push(obj);
+            });
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChartConfirmed = echarts.init(document.getElementById("ncp_confirmed_ount"));
+            var myChartCured = echarts.init(document.getElementById("ncp_cured_count"));
+            var myChartDead = echarts.init(document.getElementById("ncp_dead_count"));
+            ncpMap(dataListConfirmed, "确诊病例", myChartConfirmed, "#F3BAB0");
+            ncpMap(dataListCured, "治愈病例", myChartCured, "#66CC99");
+            ncpMap(dataListDead, "死亡病例", myChartDead, "#B4C0D5");
+        }
+
+        /**
+         * 保存短网址
+         * @param longUrl
+         */
+        function saveShortUrl(longUrl){
+            var longUrl = $("#long_url").val();
+            if(null == longUrl || "" == $.trim(longUrl)){
+                alert("长网址不可为空");
+                return;
+            }
+            $("#short_url").html("");
+            $.ajax({
+                url: "[[${#httpServletRequest.getContextPath()}]]/d/saveUrl",
+                data:{
+                    longUrl : longUrl
+                },
+                success:function(data){
+                    console.log(data);
+                    if ("FAIL" == data.type) {
+                        alert(data.msg);
+                        return;
+                    } else {
+                        var  html ="短网址：";
+                        html += '<a id="short_url_a" href="' + data.data.shortUrl +'" target="_blank">点击这里</a>'
+                        html += "<br><span>" + data.data.shortUrl + "</span>";
+                        $("#short_url").html(html);
+                    }
+                },
+                error:function(error){
+                    alert(error)
+                }
+            })
+        }
+    </script>
 </head>
 <body>
-    <h1>www.asyysy.cn</h1>
-    <p>
-        asyysy.cn
-    </p>
-    <table border="1">
-        <tr>
-            <th>序号</th>
-            <th>类型</th>
-            <th>关键字</th>
-            <th>回复内容</th>
-            <th>次数</th>
-            <th>时间</th>
-        </tr>
-        <tr  th:each="wx,wxStat : ${list}">
-            <td th:text="${wxStat.index+1}"></td>
-            <td th:text="${wx.type}"></td>
-            <td th:text="${wx.keyword}"></td>
-            <th th:text="${wx.replyText}"></th>
-            <th th:text="${wx.sendSum}"></th>
-            <th th:text="${#dates.format(wx.createTime, 'yyyy-MM-dd HH:mm:ss')}" th:value="${wx.createTime}"></th>
-        </tr>
-    </table>
+    <div class="centent">
+        <h1>www.asyysy.cn</h1>
+        <p>
+            asyysy.cn
+        </p>
+        <table border="1">
+            <tr>
+                <th>序号</th>
+                <th>类型</th>
+                <th>关键字</th>
+                <th>回复内容</th>
+                <th>次数</th>
+                <th>时间</th>
+            </tr>
+            <tr  th:each="wx,wxStat : ${list}">
+                <td th:text="${wxStat.index+1}"></td>
+                <td th:text="${wx.type}"></td>
+                <td th:text="${wx.keyword}"></td>
+                <th th:text="${wx.replyText}"></th>
+                <th th:text="${wx.sendSum}"></th>
+                <th th:text="${#dates.format(wx.createTime, 'yyyy-MM-dd HH:mm:ss')}" th:value="${wx.createTime}"></th>
+            </tr>
+        </table>
+
+        <table border="1">
+            <tr>
+                <th>序号</th>
+                <th>短网址路径</th>
+                <th>长网址路径</th>
+                <th>短网址唯一码</th>
+                <th>创建时间</th>
+                <th>转发次数</th>
+            </tr>
+            <!--<tr  th:each="d,index : ${shortUrlList}">
+                <td th:text="${index.index+1}"></td>
+                <td th:text="${d.shortUrl}"></td>
+                <td th:text="${d.longUrl}"></td>
+                <th th:text="${d.shortCode}"></th>
+                <th th:text="${#dates.format(wx.cDate, 'yyyy-MM-dd HH:mm:ss')}" th:value="${wx.cDate}"></th>
+                <th th:text="${d.redirctTime}"></th>
+            </tr>-->
+        </table>
+
+        
+        <div style="margin-top: 20px;">
+            长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sys.domain }]]</textarea> <button onclick="saveShortUrl()">保存长网址</button>
+            <br><span id="short_url"></span>
+        </div>
+
+        <!-- ncp疫情信息-->
+        <div class="margin_top_20" style="text-align: left">
+            <span id="ncpInfo"></span>
+        </div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
+        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
+        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
+        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
+        
+    </div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package cn.asyysy.app.model.short_url;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,6 +9,12 @@ import java.util.Date;
 
 @Data
 public class ShortUrl implements Serializable {
+    /**
+     * 主键
+     */
+    @TableId(value = "pkid",type = IdType.AUTO)
+    private Long pkid;
+    
     /**
      * 短网址路径
      */
@@ -16,9 +24,9 @@ public class ShortUrl implements Serializable {
      */
     private String longUrl;
     /**
-     * 请求的路径
+     * 短网址唯一码
      */
-    private String pathUrl;
+    private String shortCode;
     /**
      * 创建时间
      */

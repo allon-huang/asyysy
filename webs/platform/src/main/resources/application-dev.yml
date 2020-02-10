@@ -1,9 +1,21 @@
 domain:
-  short-url: http://d.asyysy.cn
+  domain: http://www.asyysy.cn
+  short-url:
+    domain: http://d.asyysy.cn
+  tianqiapi_com:
+    ncp_api_url : https://tianqiapi.com/api
+    ncp_api_version: epidemic
+    appid: 49174617
+    appsecret: 24ZQu9p9
+    ncp_data_timeout: 600
+  wx:
+    token: hyy210381
+    appid: wxd5407394de781115
+    appsecret: e6e9bb852143305efc8802716d762629
 server:
   port: 80
   servlet:
-    context-path: /
+    context-path: /asyysy_core
 spring:
   datasource:
     platform: mysql
@@ -25,4 +37,3 @@ spring:
     timeout: 300
   thymeleaf:
     cache: false
-wx_token: hyy210381

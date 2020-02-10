@@ -1,6 +1,6 @@
 package cn.asyysy.app.mapper.user;
 
-import cn.asyysy.app.model.WxReplyModel;
+import cn.asyysy.app.model.wechat.WxReplyModel;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;

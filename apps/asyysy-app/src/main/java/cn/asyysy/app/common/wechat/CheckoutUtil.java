@@ -15,7 +15,7 @@ public class CheckoutUtil {
 
     @PostConstruct
     public void init() {
-        token =env.getProperty("wx_token");
+        token =env.getProperty("domain.wx.token");
     }
     /**
      * 验证签名

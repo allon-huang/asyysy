@@ -22,7 +22,7 @@ public class ShortUrlInterceptor extends HandlerInterceptorAdapter {
      * 短网址domain
      * @auther huangyaoyu
      */
-    private static final String SHORT_URL_DOMAIN = PropUtil.get("short-url");
+    private static final String shortUrlDomain = PropUtil.get("short-url");
     /** log日志. */
     private static Logger logger = (Logger) LoggerFactory.getLogger(ShortUrlInterceptor.class);
 
@@ -31,7 +31,7 @@ public class ShortUrlInterceptor extends HandlerInterceptorAdapter {
         // 当前请求路径
         String requestUrl = request.getScheme()+"://" + request.getServerName();
         // 是否短网址请求
-        boolean result = requestUrl.equals(SHORT_URL_DOMAIN);
+        boolean result = requestUrl.equals(shortUrlDomain);
         //String url = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
         //logger.info("获取全路径（协议类型：//域名/项目名/命名空间/action名称?其他参数）url={}", url);
         //+request.getRequestURI();

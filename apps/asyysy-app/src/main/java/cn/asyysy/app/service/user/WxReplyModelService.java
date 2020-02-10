@@ -1,6 +1,6 @@
 package cn.asyysy.app.service.user;
 
-import cn.asyysy.app.model.WxReplyModel;
+import cn.asyysy.app.model.wechat.WxReplyModel;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;

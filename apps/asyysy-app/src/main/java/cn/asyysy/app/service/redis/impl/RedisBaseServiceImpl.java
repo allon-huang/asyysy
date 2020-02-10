@@ -2,14 +2,13 @@ package cn.asyysy.app.service.redis.impl;
 
 import cn.asyysy.app.common.config.SystemInfo;
 import cn.asyysy.app.service.redis.RedisBaseService;
-import cn.asyysy.app.model.short_url.ShortUrl;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service("redisBaseService")
 public class RedisBaseServiceImpl implements RedisBaseService {
@@ -18,11 +17,19 @@ public class RedisBaseServiceImpl implements RedisBaseService {
      */
     @Autowired
     SystemInfo systemConfig;
+
     /**
      redis
      */
     @Autowired
     private RedisTemplate redisTemplate;
+    
+    /**
+     redis
+     */
+    @Autowired
+    private StringRedisTemplate stringredisTemplate;
+    
 
     /**
      * 根据key获取obj
@@ -30,28 +37,30 @@ public class RedisBaseServiceImpl implements RedisBaseService {
      * @return
      */
     @Override
-    public ShortUrl get(String key) {
-        String tempKey = "D_" + key;
-        Object obj = redisTemplate.opsForValue().get(tempKey);
-        return null == obj ? null : JSON.parseObject(obj.toString(), ShortUrl.class);
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 
-    /**
-     * 保持短网址到redis
-     *
-     * @param longUrl
-     */
     @Override
-    public void saveShortUrl(String longUrl) {
-        // 获取随机字符串
-        String shortCode= RandomStringUtils.randomAlphanumeric(10);
-        String shortUrl = "D_" + shortCode;
-        ShortUrl dao = new ShortUrl();
-        dao.setShortUrl(shortUrl);
-        dao.setPathUrl(shortCode);
-        dao.setRedirctTime(0L);
-        dao.setCDate(new Date());
-        dao.setLongUrl(longUrl);
-        redisTemplate.opsForValue().set("D_" + shortCode, JSON.toJSONString(dao));
+    public void set(String key, Object obj) {
+        if (this.hasKey(key)) {
+            this.delete(key);
+        }
+        redisTemplate.opsForValue().set(key, JSON.toJSONString(obj));
+    }
+
+    @Override
+    public void set(String key, Object obj, int ttl) {
+        redisTemplate.opsForValue().set(key, obj, ttl, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
+
+    @Override
+    public Boolean hasKey(String key) {
+        return redisTemplate.hasKey(key);
     }
 }
