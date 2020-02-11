@@ -106,7 +106,7 @@ public class WxMpConroller extends BaseController {
             TextMeaasge textMessage=new TextMeaasge();
             textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
             textMessage.setToUserName(fromUserName);
-            textMessage.setContent(message);
+            textMessage.setContent(new String(message));
             //注意这里的toUserName 是刚才接收xml中的FromUserName
             textMessage.setFromUserName(toUserName);
             textMessage.setCreateTime(System.currentTimeMillis());
