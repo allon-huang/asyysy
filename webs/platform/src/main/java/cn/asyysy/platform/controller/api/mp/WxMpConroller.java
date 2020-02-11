@@ -61,6 +61,7 @@ public class WxMpConroller extends BaseController {
         wxConfig.setNonceStr(nonce);
         wxConfig.setTimestamp(timestamp);
         wxConfig.setSignature(signature);
+        wxConfig.setAppid(systemInfo().getWxAppid());
         redisBaseService.delete(BaseConsts.REDIS_KEY.WX_INFO);
         redisBaseService.set(BaseConsts.REDIS_KEY.WX_INFO, wxConfig);
         return returnStr;

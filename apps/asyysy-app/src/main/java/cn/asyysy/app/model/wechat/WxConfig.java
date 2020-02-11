@@ -18,4 +18,9 @@ public class WxConfig {
      * 签名
      */
     private String signature;
+
+    /**
+     * 微信appid
+     */
+    public String appid;
 }

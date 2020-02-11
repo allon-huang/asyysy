@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>黄猿帅-[[${sysInfo.DOAMIN }]]</title>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/echarts.min.js"></script>
+    <script src="static/js/china.js"></script>
+    <script src="static/js/echarts-gl.js"></script>
+    <script src="/static/js/common/index.js"></script>
+    <style>
+        body{
+            /*background-color: #6C496F;*/
+            margin: 0 auto;
+        }
+
+        .margin_top_20{
+            margin-top: 20px;
+        }
+
+        .ncp_chart{
+            width: 380px;
+            height:350px;
+        }
+
+        .centent {
+            margin: 0 auto;
+            text-align: center;
+            display:inline-block
+        }
+    </style>
+
+    <script>
+        /**
+         * api 文档说明http://tianqiapi.com/index/doc?version=epidemic
+         * @type {string}
+         */
+        // api版本号
+        var version = "[[${sysInfo.ncpApiVersion}]]";
+        // api appid
+        var appid = "[[${sysInfo.weatherAppid}]]";
+        // api appsecret
+        var appsecret = "[[${sysInfo.weatherAppSecret}]]";
+        var api2019_nCoV_api = "[[${sysInfo.ncpApiUrl}]]?version=" + version +"&appid=" +appid +"&appsecret="+appsecret;
+
+        $(function(){
+            // 新冠病毒
+            ncp();
+        })
+    </script>
+</head>
+<body>
+    <div class="centent">
+        <h1>www.asyysy.cn</h1>
+        <p>
+            asyysy.cn
+        </p>
+        <table border="1">
+            <tr>
+                <th>序号</th>
+                <th>类型</th>
+                <th>关键字</th>
+                <th>回复内容</th>
+                <th>次数</th>
+                <th>时间</th>
+            </tr>
+            <tr  th:each="wx,wxStat : ${list}">
+                <td th:text="${wxStat.index+1}"></td>
+                <td th:text="${wx.type}"></td>
+                <td th:text="${wx.keyword}"></td>
+                <th th:text="${wx.replyText}"></th>
+                <th th:text="${wx.sendSum}"></th>
+                <th th:text="${#dates.format(wx.createTime, 'yyyy-MM-dd HH:mm:ss')}" th:value="${wx.createTime}"></th>
+            </tr>
+        </table>
+        <div style="margin-top: 20px;">
+            长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sysInfo.DOAMIN }]]</textarea> <button onclick="saveShortUrl()">保存长网址</button>
+            <br><span id="short_url"></span>
+        </div>
+
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
+        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
+        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
+        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
+        
+    </div>
+</body>
+</html>

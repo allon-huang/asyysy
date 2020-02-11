@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>黄猿帅-[[${sys.domain }]]</title>
+    <meta name="referrer" content="never">
+    <script th:src="@{/static/js/jquery.min.js}" ></script>
+    <script th:src="@{/static/js/echarts.min.js}"></script>
+    <script th:src="@{/static/js/china.js}"></script>
+    <script th:src="@{/static/js/echarts-gl.js}"></script>
+    <script th:src="@{/static/js/common/common.js}"></script>
+    <!--微信jdsdk-->
+    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+
+
+    <link rel="stylesheet" href="https://weui.io/style/weui.css">
+    <!--<link rel="stylesheet" href="https://weui.io/example.css">-->
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="https://weui.io/zepto.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+    <!--<script type="text/javascript" src="https://weui.io/example.js"></script>-->
+    <script type="text/javascript">
+        $(function(){
+            // 新冠病毒
+            ncpFun();
+        })
+        //weui.alert('alert');
+    </script>
+
+    <style>
+    </style>
+
+    <script>
+        weui.tab('#tab',{
+            defaultIndex: 0,
+            onChange: function(index){
+                console.log(index);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="weui-tab" id="tab">
+        <div class="weui-navbar">
+            <div class="weui-navbar__item">反馈</div>
+            <div class="weui-navbar__item">表单</div>
+            <div class="weui-navbar__item">上传</div>
+            <div class="weui-navbar__item">其它</div>
+        </div>
+        <div class="weui-tab__panel">
+            <div class="weui-tab__content">反馈页</div>
+            <div class="weui-tab__content">表单页</div>
+            <div class="weui-tab__content">上传页</div>
+            <div class="weui-tab__content">其它页</div>
+        </div>
+    </div>
+
+    <a href="javascript:;" class="weui-btn weui-btn_primary">页面主操作</a>
+
+    <!-- ncp疫情信息-->
+    <div class="margin_top_20" style="text-align: left">
+        <span id="ncpInfo"></span>
+    </div>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
+    <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
+    <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
+    <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
+</body>
+</html>

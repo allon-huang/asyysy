@@ -43,6 +43,25 @@ public class IndexController extends BaseController {
         // 微信回复模板
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
+        // 短网址
+        request.setAttribute("shortUrlList", shortUrlService.selectList(new EntityWrapper<>()
+        //.eq("gender",1)
+        //.like("name", "霸")
+        //.or()//SELECT id AS id,`name`,email,gender,age FROM employee WHERE (gender = ? AND name LIKE ? OR email LIKE ?)
+        //.orNew()//SELECT id AS id,`name`,email,gender,age FROM employee WHERE (gender = ? AND name LIKE ?) OR (email LIKE ?)
+        //.like("email", "123")
+        ));
+        // 系统信息
+        request.setAttribute("sys", systemInfo());
+        return  "index";
+    }
+
+
+    @RequestMapping(value = "h5")
+    public String index1(@RequestParam Map<String,Object> params, HttpServletRequest request) {
+        // 微信回复模板
+        List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
+        request.setAttribute("list",wxReplys);
         EntityWrapper ew = new EntityWrapper();
         ew.setEntity(new ShortUrl());
         // 短网址
@@ -54,8 +73,10 @@ public class IndexController extends BaseController {
         // 微信配置
         Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
         request.setAttribute("wxConfig", (null == wxConfig) ? null: JSON.parseObject(wxConfig.toString(), WxConfig.class));
-        return  "index";
+        return  "h5";
     }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/indexJson")

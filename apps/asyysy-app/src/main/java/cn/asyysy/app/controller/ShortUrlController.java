@@ -43,7 +43,6 @@ public class ShortUrlController extends BaseController {
             logger.error("保存短网址异常:{}", e.getMessage(), e);
             return ApiResponse.createFailResponse("保存短网址异常", e);
         }
-
     }
 
     @RequestMapping(value = "/{shortUrl}")

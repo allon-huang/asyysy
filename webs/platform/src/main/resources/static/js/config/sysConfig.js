@@ -1,0 +1,1 @@
+var context_path = "/asyysy_core";

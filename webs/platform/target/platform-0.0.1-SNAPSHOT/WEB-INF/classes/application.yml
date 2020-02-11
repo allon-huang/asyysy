@@ -1,0 +1,36 @@
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mybatis/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+mybatis-plus:
+  mapper-locations: classpath:/mybatis/mapper/**/*.xml
+server:
+  servlet:
+    session:
+      timeout: 3600
+  tomcat:
+    accesslog:
+      buffered: 'true '
+      directory: 'logs # Directory in which log files are created. Can be relative
+                to the tomcat base dir or absolute.'
+      enabled: 'false '
+      file-date-format: 'yyyy-MM-dd # Date format to place in log file name.'
+      pattern: 'common # Format pattern for access logs.'
+      prefix: 'access_log # Log file name prefix.'
+      rename-on-rotate: 'false '
+      request-attributes-enabled: 'false '
+      rotate: 'true '
+      suffix: '.log '
+spring:
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+  profiles:
+    active: dev
+  thymeleaf:
+    encoding: UTF-8
+    mode: HTML5
+  jmx:
+    enabled: false

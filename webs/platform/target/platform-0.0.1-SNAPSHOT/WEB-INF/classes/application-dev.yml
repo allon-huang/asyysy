@@ -1,0 +1,36 @@
+domain:
+  domain: http://www.asyysy.cn
+  short-url: http://d.asyysy.cn
+  tianqiapi_com:
+    ncp_api_url : https://tianqiapi.com/api
+    ncp_api_version: epidemic
+    appid: 49174617
+    appsecret: 24ZQu9p9
+    ncp_data_timeout: 600
+
+server:
+  port: 80
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    platform: mysql
+    driver-class-name: com.mysql.jdbc.Driver
+    password: 123123112233
+    url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai
+    username: root
+
+    initialization-mode: never
+    schema: classpath:database/style.sql
+    data: classpath:database/data.sql
+    continue-on-error: false
+    sql-script-encoding: utf-8
+    separator: ;
+
+  redis:
+    hostName: 127.0.0.1
+    port: 6379
+    timeout: 300
+  thymeleaf:
+    cache: false
+wx_token: hyy210381
