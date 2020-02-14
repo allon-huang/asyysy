@@ -35,6 +35,14 @@
             text-align: center;
             display:inline-block
         }
+        #now_time_div{
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        #now_time_echarts{
+            width: 400px;
+            height:500px;
+        }
     </style>
 
     <script>
@@ -43,17 +51,32 @@
             initNcp();
             // 微信
             initWx();
-            console.log(wxConfig)
-            console.log(ncpInfo)
+            // 当前时间
+            initNowDate();
+            init();
+            $("#domain").html(window.location.origin);
         })
     </script>
 </head>
 <body>
     <div class="centent">
-        <h1>www.asyysy.cn</h1>
-        <p>
-            asyysy.cn
-        </p>
+        <h1 id="domain"></h1>
+        <div class="now_time_div margin_top_20" style="margin-bottom: 10px;">
+            当前时间
+            <span id="now_time_span" ></span>
+        </div>
+
+        <!-- ncp疫情信息-->
+        <div class="margin_top_20" style="text-align: left">
+            <span id="ncpInfo"></span>
+        </div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
+        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
+        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
+        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
+
         <table border="1">
             <tr>
                 <th>序号</th>
@@ -84,32 +107,24 @@
                 <th>转发次数</th>
             </tr>
             <tr  th:each="d,index : ${shortUrlList}">
-                <td th:text="${index.index+1}"><a ></a></td>
-                <td><a th:href="${d.shortUrl}">点我</a></td>
-                <td><a th:href="${d.longUrl}">点我</a></td>
+                <td th:text="${index.index+1}"></td>
+                <td><a th:href="${d.shortUrl}" target="_blank">点我</a></td>
+                <td><a th:href="${d.longUrl}" target="_blank">点我</a></td>
                 <th th:text="${d.shortCode}"></th>
                 <th th:text="${#dates.format(d.cDate, 'yyyy-MM-dd HH:mm:ss')}" th:value="${d.cDate}"></th>
                 <th th:text="${d.redirctTime}"></th>
             </tr>
         </table>
 
-        
         <div style="margin-top: 20px;">
             长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sys.domain }]]</textarea> <button onclick="saveShortUrl()">保存长网址</button>
             <br><span id="short_url"></span>
         </div>
-
-        <!-- ncp疫情信息-->
-        <div class="margin_top_20" style="text-align: left">
-            <span id="ncpInfo"></span>
-        </div>
-        <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
-        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
-        <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
-        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
-        <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
-        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
         
+        <!--当前时间 https://gallery.echartsjs.com/editor.html?c=xBJd0b_nNf-->
+        <div class="now_time_div margin_top_20" style="margin-bottom: 10px;">
+            <div id="now_time_echarts" class="margin_top_20"></div>
+        </div>
     </div>
 </body>
 </html>

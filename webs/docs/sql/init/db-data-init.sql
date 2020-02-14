@@ -12,9 +12,9 @@ begin
 
     -- ---2018-07-26 hejw start-------------
     set @num=0;
-    select count(0) into @num from SYS_INFO ;
+    select count(0) into @num from sys_info ;
     if @num = 0 then
-        insert into SYS_INFO values ('00000',0.001,sysdate());
+        insert into sys_info values ('00000',0.001,sysdate());
     end if;
 
     set @num=0;
