@@ -60,13 +60,13 @@ public class ApiResponse implements Serializable {
 
     /**
      *
-     * @Title: createSuccessResponse
+     * @Title: SUCCESS
      * @Description: 成功返回,包含信息和数据
      * @param msg
      * @param data
      * @return
      */
-    public static ApiResponse createSuccessResponse(String msg, Object data) {
+    public static ApiResponse SUCCESS(String msg, Object data) {
         ApiResponse response = new ApiResponse();
         response.setType(SUCCESS_TYPE);
         response.setMsg(msg);
@@ -76,36 +76,36 @@ public class ApiResponse implements Serializable {
 
     /**
      *
-     * @Title: createSuccessResponse
+     * @Title: SUCCESS
      * @Description: 成功返回,只包含信息
      * @param msg
      * @return
      */
-    public static ApiResponse createSuccessResponse(String msg) {
-        return createSuccessResponse(msg, NO_DATA);
+    public static ApiResponse SUCCESS(String msg) {
+        return SUCCESS(msg, NO_DATA);
     }
 
     /**
      *
-     * @Title: createSuccessResponse
+     * @Title: SUCCESS
      * @Description: 成功返回,只包含数据
      * @param data
      * @param clazz
      * @return
      */
-    public static ApiResponse createSuccessResponse(Object data, Class<?> clazz) {
-        return createSuccessResponse(SUCCESS_MSG, data);
+    public static ApiResponse SUCCESS(Object data, Class<?> clazz) {
+        return SUCCESS(SUCCESS_MSG, data);
     }
 
     /**
      *
-     * @Title: createFailResponse
+     * @Title: ERROR
      * @Description: 失败返回,包含信息和数据
      * @param msg
      * @param data
      * @return
      */
-    public static ApiResponse createFailResponse(String msg, Object data) {
+    public static ApiResponse ERROR(String msg, Object data) {
         ApiResponse response = new ApiResponse();
         response.setType(FAIL_TYPE);
         response.setMsg(msg);
@@ -115,25 +115,25 @@ public class ApiResponse implements Serializable {
 
     /**
      *
-     * @Title: createFailResponse
+     * @Title: ERROR
      * @Description: 失败返回,只包含信息
      * @param msg
      * @return
      */
-    public static ApiResponse createFailResponse(String msg) {
-        return createFailResponse(msg, NO_DATA);
+    public static ApiResponse ERROR(String msg) {
+        return ERROR(msg, NO_DATA);
     }
 
     /**
      *
-     * @Title: createFailResponse
+     * @Title: ERROR
      * @Description: 失败返回,只包含数据
      * @param data
      * @param clazz
      * @return
      */
-    public static ApiResponse createFailResponse(Object data, Class<?> clazz) {
-        return createFailResponse(FAIL_MSG, data);
+    public static ApiResponse ERROR(Object data, Class<?> clazz) {
+        return ERROR(FAIL_MSG, data);
     }
 
     public String getType() {

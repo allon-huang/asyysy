@@ -1,23 +1,30 @@
 package cn.asyysy.platform.controller;
 
-import cn.asyysy.app.common.SendmailUtil;
+import cn.asyysy.app.annotation.PassToken;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.controller.BaseController;
+import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.model.short_url.ShortUrl;
 import cn.asyysy.app.model.wechat.WxConfig;
 import cn.asyysy.app.model.wechat.WxReplyModel;
 import cn.asyysy.app.service.redis.RedisBaseService;
 import cn.asyysy.app.service.short_url.ShortUrlService;
+import cn.asyysy.app.service.user.UserService;
 import cn.asyysy.app.service.user.WxReplyModelService;
+import cn.asyysy.app.util.SendmailUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,8 +44,11 @@ public class IndexController extends BaseController {
 
     @Autowired
     private ShortUrlService shortUrlService;
+    @Autowired
+    UserService userService;
 
-    @RequestMapping(value = "*")
+    @PassToken
+    @RequestMapping(value = "index")
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {
         // 微信回复模板
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
@@ -74,6 +84,37 @@ public class IndexController extends BaseController {
         Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
         request.setAttribute("wxConfig", (null == wxConfig) ? null: JSON.parseObject(wxConfig.toString(), WxConfig.class));
         return  "h5";
+    }
+
+    @RequestMapping(value = "chat")
+    public String chat(@RequestParam Map<String,Object> params, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
+        request.setAttribute("user", user);
+        // 系统信息
+        request.setAttribute("sys", systemInfo());
+        EntityWrapper<User> ew = new EntityWrapper<User>();
+        ew.setEntity(new User());
+        ew.ne("pkid", user.getPkid());
+        List<User> list = userService.selectList(ew);
+        request.setAttribute("list", list);
+        return  "chat";
+    }
+
+    @RequestMapping(value = "chatList")
+    @ResponseBody
+    public Object chatList(HttpServletRequest request, @RequestBody User vo) {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
+        EntityWrapper<User> ew = new EntityWrapper<User>();
+        ew.setEntity(new User());
+        ew.ne("pkid", user.getPkid());
+        // 模糊查询
+        if (StringUtils.isNotEmpty(vo.getUserName())) {
+            ew.and().like("user_name", vo.getUserName());
+        }
+        List<User> list = userService.selectList(ew);
+        return ApiResponse.SUCCESS("获取用户列表成功", list);
     }
 
 

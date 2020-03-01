@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;
+package cn.asyysy.app.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

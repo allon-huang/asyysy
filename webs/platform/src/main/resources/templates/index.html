@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <meta name="referrer" content="never">
     <title>黄猿帅-[[${sys.domain }]]</title>
-    <script th:src="@{/static/js/jquery.min.js}" ></script>
-    <script th:src="@{/static/js/echarts.min.js}"></script>
-    <script th:src="@{/static/js/china.js}"></script>
-    <script th:src="@{/static/js/echarts-gl.js}"></script>
+    <script th:src="@{static/js/jquery.min.js}" ></script>
+    <script th:src="@{static/js/echarts.min.js}"></script>
+    <script th:src="@{static/js/china.js}"></script>
+    <script th:src="@{static/js/echarts-gl.js}"></script>
     <!--微信jdsdk-->
-    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <!--JS SDK基于QQ互联-->
+   <!-- <script type="text/javascript"  charset="utf-8"
+            src="http://connect.qq.com/qc_jssdk.js"
+            data-appid="1107957541"
+            data-redirecturi="http://yysy.wicp.net/"
+    ></script>-->
 
     <script th:src="@{/static/js/config/sysConfig.js}"></script>
     <script th:src="@{/static/js/common/common.js}"></script>
+    <script th:src="@{/static/js/common/location.js}"></script>
 
     <style>
         body{
@@ -43,6 +50,9 @@
             width: 400px;
             height:500px;
         }
+        input {
+            background-color: whitesmoke;
+        }
     </style>
 
     <script>
@@ -55,15 +65,31 @@
             initNowDate();
             init();
             $("#domain").html(window.location.origin);
+            $("#location_info").html(getLocation())
         })
+
+
     </script>
 </head>
 <body>
     <div class="centent">
         <h1 id="domain"></h1>
+
+        <!--<span id="qqLoginBtn"></span>
+        <script type="text/javascript">
+            QC.Login({
+                btnId:"qqLoginBtn"	//插入按钮的节点id
+            });
+        </script>-->
         <div class="now_time_div margin_top_20" style="margin-bottom: 10px;">
             当前时间
             <span id="now_time_span" ></span>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button id="getLocation">获取位置信息</button>
+            <br>
+            <span id="location_info"></span>
         </div>
 
         <!-- ncp疫情信息-->
@@ -120,11 +146,15 @@
             长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sys.domain }]]</textarea> <button onclick="saveShortUrl()">保存长网址</button>
             <br><span id="short_url"></span>
         </div>
-        
+
         <!--当前时间 https://gallery.echartsjs.com/editor.html?c=xBJd0b_nNf-->
         <div class="now_time_div margin_top_20" style="margin-bottom: 10px;">
             <div id="now_time_echarts" class="margin_top_20"></div>
         </div>
+
+        <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=LkZXVxwfHh0WH25IQVZDT0dCAE1BQw" style="text-decoration:none;">
+            <img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/>
+        </a>
     </div>
 </body>
 </html>

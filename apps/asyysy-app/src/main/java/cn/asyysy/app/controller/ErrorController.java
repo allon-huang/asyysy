@@ -28,7 +28,7 @@ public class ErrorController {
     @ResponseBody
     public ApiResponse notFound() {
         log.warn("没有找到对应的信息");
-        return ApiResponse.createFailResponse("没有找到对应的信息");
+        return ApiResponse.ERROR("没有找到对应的信息");
     } */
 
     @RequestMapping(value = "/404")

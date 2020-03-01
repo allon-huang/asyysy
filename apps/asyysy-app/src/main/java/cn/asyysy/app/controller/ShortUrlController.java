@@ -28,20 +28,20 @@ public class ShortUrlController extends BaseController {
 
     @Autowired
     private ShortUrlService shortUrlService;
-    
+
     @RequestMapping(value = "saveUrl")
     @ResponseBody
     public Object saveUrl(@RequestParam String longUrl){
         try {
             // 保存短网址
             ShortUrl data = shortUrlService.save(longUrl);
-            return ApiResponse.createSuccessResponse("success",data);
+            return ApiResponse.SUCCESS("success",data);
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.createFailResponse(e.getMessage() );
+            return ApiResponse.ERROR(e.getMessage() );
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.createFailResponse("保存短网址异常", e);
+            return ApiResponse.ERROR("保存短网址异常", e);
         }
     }
 
@@ -58,13 +58,13 @@ public class ShortUrlController extends BaseController {
             response.sendRedirect(d.getLongUrl());
             // 更新转发次数
             shortUrlService.updateRedirctTime(d);
-            return ApiResponse.createSuccessResponse("success", JSONArray.toJSONString(d));
+            return ApiResponse.SUCCESS("success", JSONArray.toJSONString(d));
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.createFailResponse(e.getMessage() );
+            return ApiResponse.ERROR(e.getMessage() );
         } catch (Exception e){
             logger.error("短网址跳转异常:{}", e.getMessage(), e);
-            return ApiResponse.createFailResponse("短网址异常", e);
+            return ApiResponse.ERROR("短网址异常", e);
         }
     }
 }

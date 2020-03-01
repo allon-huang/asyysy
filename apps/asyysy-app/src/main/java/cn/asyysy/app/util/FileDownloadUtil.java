@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;/*
+package cn.asyysy.app.util;/*
 package cn.asyysy.core.common;
 
 import com.golden.ex.base.weixin.wxmodel.MyX509TrustManager;

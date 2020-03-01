@@ -1,3 +1,4 @@
+var common = {}
 //微信配置
 var wxConfig;
 // 新冠病毒数据
@@ -760,20 +761,11 @@ function nowTimeRender() {
  * 微信-初始化
  */
 function initWx() {
-    $.ajax({
-        url: context_path + "/common/wxConfig",
-        success:function(data){
-            if ("FAIL" == data.type) {
-                console.log(data);
-                return;
-            } else {
-                wxConfig = data.data;
-                wxFun(data.data)
-            }
-        },
-        error:function(error){
-            alert(error)
-        }
+    common.ajaxPostJson(context_path + "/common/wxConfig",null,function (data) {
+        wxConfig = data.data;
+        wxFun(data.data)
+    },function (data) {
+        console.log(data);
     })
 }
 
@@ -805,13 +797,19 @@ function wxFun(data) {
             }
         });
     });
-    wx.checkJsApi({
+   /* wx.checkJsApi({
         jsApiList: jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,
         success: function(res) {
             // 以键值对的形式返回，可用的api值true，不可用为false
             // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
         }
-    });
+    });*/
+  /*  wx.getNetworkType({
+        success: function (res) {
+            var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+            console.log(res);
+        }
+    });*/
 }
 
 /**
@@ -825,26 +823,13 @@ function saveShortUrl(longUrl){
         return;
     }
     $("#short_url").html("");
-    $.ajax({
-        url: context_path + "/d/saveUrl",
-        data:{
-            longUrl : longUrl
-        },
-        success:function(data){
-            console.log(data);
-            if ("FAIL" == data.type) {
-                alert(data.msg);
-                return;
-            } else {
-                var  html ="短网址：";
-                html += '<a id="short_url_a" href="' + data.data.shortUrl +'" target="_blank">点击这里</a>'
-                html += "<br><span>" + data.data.shortUrl + "</span>";
-                $("#short_url").html(html);
-            }
-        },
-        error:function(error){
-            alert(error)
-        }
+    common.ajaxPostJson(context_path + "/d/saveUrl",null,function (data) {
+        var  html ="短网址：";
+        html += '<a id="short_url_a" href="' + data.data.shortUrl +'" target="_blank">点击这里</a>'
+        html += "<br><span>" + data.data.shortUrl + "</span>";
+        $("#short_url").html(html);
+    },function (data) {
+        alert(data.msg);
     })
 }
 
@@ -852,21 +837,12 @@ function saveShortUrl(longUrl){
  * 新冠病毒-初始化
  */
 function initNcp() {
-    $.ajax({
-        url: context_path + "/common/ncpInfo",
-        success:function(data){
-            if ("FAIL" == data.type) {
-                console.log(data);
-                return;
-            } else {
-                // 反转义转换JSON
-                ncpInfo = JSON.parse(oppositeMeaning(data.data))
-                ncpFun(ncpInfo)
-            }
-        },
-        error:function(error){
-            alert(error)
-        }
+    common.ajaxPostJson(context_path + "/common/ncpInfo",null,function (data) {
+        // 反转义转换JSON
+        ncpInfo = JSON.parse(oppositeMeaning(data.data))
+        ncpFun(ncpInfo)
+    },function (data) {
+        console.log(data);
     })
 }
 
@@ -1017,4 +993,32 @@ function dateFtt(fmt,date){
         if(new RegExp("("+ k +")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
     return fmt;
+}
+
+
+common.ajaxPostJson = function(url, data, success, error){
+    common.ajaxPostJsonBeforeSend(url, data, success, error,function (xhr) {})
+}
+
+common.ajaxPostJsonBeforeSend = function(url, data, success, error, beforeSend){
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        contentType: "application/json;charset=UTF-8",
+        dataType : "json",
+        beforeSend: function(xhr) {
+            beforeSend(xhr);
+        },
+        success:function(data){
+            if ("FAIL" == data.type) {
+                error(data);
+            } else {
+                success(data);
+            }
+        },
+        error:function(error){
+            console.log(error);
+        }
+    })
 }

@@ -27013,7 +27013,7 @@ MapServiceCoordSys3D.prototype = {
         this.updateTransform();
     },
 
-    // https://github.com/mapbox/mapbox-gl-js/blob/master/src/geo/transform.js#L479
+    // https://github.com/mapbox/mapbox-gl-../js/blob/master/src/geo/transform.js#L479
     updateTransform: function () {
         if (!this.height) { return; }
 
@@ -29965,7 +29965,7 @@ LinkedList.Entry = function (val) {
 var loopRegex = /for\s*?\(int\s*?_idx_\s*\=\s*([\w-]+)\;\s*_idx_\s*<\s*([\w-]+);\s*_idx_\s*\+\+\s*\)\s*\{\{([\s\S]+?)(?=\}\})\}\}/g;
 
 function unrollLoop(shaderStr, defines, lightsNumbers) {
-    // Loop unroll from three.js, https://github.com/mrdoob/three.js/blob/master/src/renderers/webgl/WebGLProgram.js#L175
+    // Loop unroll from three.js, https://github.com/mrdoob/three.../js/blob/master/src/renderers/webgl/WebGLProgram.js#L175
     // In some case like shadowMap in loop use 'i' to index value much slower.
 
     // Loop use _idx_ and increased with _idx_++ will be unrolled
@@ -35480,8 +35480,8 @@ module.exports = _default;
 /***/ (function(module, exports) {
 
 /**
- * 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
- * @see http://sole.github.io/tween.js/examples/03_graphs.html
+ * 缓动代码来自 https://github.com/sole/tween.../js/blob/master/src/Tween.js
+ * @see http://sole.github.io/tween.../js/examples/03_graphs.html
  * @exports zrender/animation/easing
  */
 var easing = {
@@ -46555,7 +46555,7 @@ function Mapbox3DLayer (id, zr) {
 
     // FIXME If in module environment.
     if (!mapboxgl) {
-        throw new Error('Mapbox GL library must be included. See https://www.mapbox.com/mapbox-gl-js/api/');
+        throw new Error('Mapbox GL library must be included. See https://www.mapbox.com/mapbox-gl-../js/api/');
     }
 
     this._mapbox = new mapboxgl.Map({

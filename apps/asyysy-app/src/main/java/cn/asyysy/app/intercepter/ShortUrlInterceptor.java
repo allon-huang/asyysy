@@ -1,7 +1,6 @@
 package cn.asyysy.app.intercepter;
 
-import cn.asyysy.app.common.config.PropUtil;
-import org.apache.commons.lang.StringUtils;
+import cn.asyysy.app.config.PropUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
@@ -9,9 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 短网址专属拦截器

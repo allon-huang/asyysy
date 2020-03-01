@@ -1,7 +1,7 @@
 package cn.asyysy.app.service.short_url.impl;
 
-import cn.asyysy.app.common.StringUtil;
-import cn.asyysy.app.common.config.SystemInfo;
+import cn.asyysy.app.util.StringUtil;
+import cn.asyysy.app.config.SystemInfo;
 import cn.asyysy.app.exception.BaseException;
 import cn.asyysy.app.mapper.short_url.ShortUrlMapper;
 import cn.asyysy.app.model.short_url.ShortUrl;
@@ -93,7 +93,7 @@ public class ShortUrlServiceImpl extends ServiceImpl<ShortUrlMapper, ShortUrl> i
         shortUrlMapper.insert(bean);
         return bean;
     }
-    
+
     /**
      * 根据短网址code获取短网址
      * @param shortUrl

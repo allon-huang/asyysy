@@ -1,6 +1,6 @@
 package cn.asyysy.app.service.redis.impl;
 
-import cn.asyysy.app.common.config.SystemInfo;
+import cn.asyysy.app.config.SystemInfo;
 import cn.asyysy.app.service.redis.RedisBaseService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ public class RedisBaseServiceImpl implements RedisBaseService {
      */
     @Autowired
     private RedisTemplate redisTemplate;
-    
+
     /**
      redis
      */
     @Autowired
     private StringRedisTemplate stringredisTemplate;
-    
+
 
     /**
      * 根据key获取obj

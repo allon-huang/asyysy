@@ -1,4 +1,4 @@
-package cn.asyysy.app.common.config;
+package cn.asyysy.app.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,7 +70,7 @@ public class SystemInfo {
      */
     @Value("${domain.wx.appsecret}")
     public String wxAppsecret;
-    
+
     /**
      * Springboot初始化系统配置
      * 1、创建系统信息model

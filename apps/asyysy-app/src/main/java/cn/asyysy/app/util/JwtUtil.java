@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;
+package cn.asyysy.app.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

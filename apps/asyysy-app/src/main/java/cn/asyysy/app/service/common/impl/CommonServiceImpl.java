@@ -1,7 +1,7 @@
 package cn.asyysy.app.service.common.impl;
 
-import cn.asyysy.app.common.HttpUtil;
-import cn.asyysy.app.common.config.SystemInfo;
+import cn.asyysy.app.util.HttpUtil;
+import cn.asyysy.app.config.SystemInfo;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.exception.BaseException;
 import cn.asyysy.app.service.common.CommonService;

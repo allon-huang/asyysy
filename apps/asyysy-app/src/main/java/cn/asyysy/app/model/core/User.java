@@ -1,11 +1,9 @@
 package cn.asyysy.app.model.core;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +15,7 @@ import java.util.Date;
  * @since 2019-05-08
  */
 @Data
-public class User extends Model<User> {
+public class User {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,9 +53,4 @@ public class User extends Model<User> {
      * 最近更新时间
      */
     private Date updateDate;
-
-    @Override
-    protected Serializable pkVal() {
-        return this.pkid;
-    }
 }

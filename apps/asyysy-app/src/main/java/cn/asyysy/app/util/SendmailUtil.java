@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;
+package cn.asyysy.app.util;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 

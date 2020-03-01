@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;
+package cn.asyysy.app.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

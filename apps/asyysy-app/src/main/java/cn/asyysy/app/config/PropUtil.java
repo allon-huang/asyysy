@@ -1,4 +1,4 @@
-package cn.asyysy.app.common.config;
+package cn.asyysy.app.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -25,7 +25,7 @@ server:
 spring:
   mvc:
     view:
-      prefix: classpath:/templates/
+      prefix: ${server.servlet.context-path}
       suffix: .html
   profiles:
     active: dev
@@ -34,3 +34,5 @@ spring:
     mode: HTML5
   jmx:
     enabled: false
+  resources: /static/**
+  static-locations: classpath:/static/

@@ -1,6 +1,7 @@
-package cn.asyysy.app.common.config;
+package cn.asyysy.app.config;
 
 import cn.asyysy.app.intercepter.ShortUrlInterceptor;
+import cn.asyysy.app.intercepter.SystemInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,7 +14,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
 
     /*@Autowired
-    private ShortUrlInterceptor shortUrlInterceptor;*/
+    private https://weui.io/ shortUrlInterceptor;*/
 
    /* @Bean
     public ShortUrlInterceptor getShortUrlInterceptor(){
@@ -39,6 +40,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // addPathPatterns 需要拦截的路径/** 为全部    excludePathPatterns 拦截路径下排除的路径
+        registry.addInterceptor(new SystemInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new ShortUrlInterceptor()).addPathPatterns("/**");
         // 注册Token拦截器
         //registry.addInterceptor(new ApiSignatureInterceptor());

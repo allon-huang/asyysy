@@ -1,4 +1,4 @@
-package cn.asyysy.app.common.config;
+package cn.asyysy.app.config;
 
 
 import org.springframework.context.annotation.Configuration;

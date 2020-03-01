@@ -1,1 +1,1 @@
-var context_path = "/asyysy_core";
+var context_path = "http://yysy.wicp.net/asyysy_core";

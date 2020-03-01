@@ -3,7 +3,7 @@ package cn.asyysy.app.controller;
 import cn.asyysy.app.service.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import cn.asyysy.app.common.config.SystemInfo;
+import cn.asyysy.app.config.SystemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -19,7 +19,7 @@ public class BaseController {
 
     @Autowired
     public CommonService commonService;
-    
+
     /**
      * 系统对应配置
      */
