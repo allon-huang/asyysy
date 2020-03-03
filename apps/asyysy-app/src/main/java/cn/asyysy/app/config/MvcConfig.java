@@ -2,16 +2,28 @@ package cn.asyysy.app.config;
 
 import cn.asyysy.app.intercepter.ShortUrlInterceptor;
 import cn.asyysy.app.intercepter.SystemInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @EnableWebMvc
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+    //service注入在拦截器的注册器中
+    /**
+     * 系统对应配置
+     */
+    @Autowired
+    private SystemInfo systemInfo;
 
+    @Autowired
+    private Environment env;
 
     /*@Autowired
     private https://weui.io/ shortUrlInterceptor;*/
@@ -40,11 +52,17 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // addPathPatterns 需要拦截的路径/** 为全部    excludePathPatterns 拦截路径下排除的路径
-        registry.addInterceptor(new SystemInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new SystemInterceptor(systemInfo, env)).addPathPatterns("/**");
         registry.addInterceptor(new ShortUrlInterceptor()).addPathPatterns("/**");
         // 注册Token拦截器
         //registry.addInterceptor(new ApiSignatureInterceptor());
         //registry.addInterceptor(new JwtInterceptor()) .addPathPatterns("/tp_store/logout");
+    }
+
+    /*开启WebSocket支持*/
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
     }
 
 }

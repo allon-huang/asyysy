@@ -1,5 +1,5 @@
 domain:
-  domain: http://yysy.wicp.net/asyysy_core
+  domain: http://localhost:8080/asyysy_core
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:

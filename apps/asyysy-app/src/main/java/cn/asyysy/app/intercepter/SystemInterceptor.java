@@ -2,6 +2,7 @@ package cn.asyysy.app.intercepter;
 
 
 import cn.asyysy.app.annotation.PassToken;
+import cn.asyysy.app.config.SystemInfo;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.model.common.ApiResponse;
 import cn.asyysy.app.model.core.User;
@@ -10,6 +11,8 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
@@ -31,10 +34,27 @@ import java.util.Date;
 public class SystemInterceptor extends HandlerInterceptorAdapter {
     /** log日志. */
     private static Logger logger = (Logger) LoggerFactory.getLogger(SystemInterceptor.class);
+    /**
+     * 系统对应配置
+     */
+    @Autowired
+    private SystemInfo systemInfo;
 
+    @Autowired
+    private Environment env;
+
+    public SystemInterceptor(SystemInfo systemInfo, Environment env){
+        this.systemInfo =systemInfo;
+        this.env =env;
+    }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-       if(!request.getRequestURI().contains("static")) {
+
+        request.setAttribute("sys", systemInfo);
+        if (request.getRequestURI().contains("/static/js/config/sysConfig.js")) {
+        }
+
+        if (!request.getRequestURI().contains("static")) {
            Date now = new Date();
            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
            String ip = IpUtils.getIpAddress(request);
@@ -43,7 +63,7 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
                    StringUtils.isEmpty(ip)? request.getRemoteAddr() : ip,
                    request.getRequestURI(),
                    (null == request.getParameterMap() ? "" : request.getParameterMap())) ;
-       }
+        }
         HttpSession session = request.getSession();
         //如果不是映射到方法直接通过
         if(!(object instanceof HandlerMethod)){
@@ -78,6 +98,7 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
             response.sendRedirect( "login");
+            return true;
         }
         User user = (User)userObj;
         logger.info("用户:{}-一登陆登录", user.getUserName());

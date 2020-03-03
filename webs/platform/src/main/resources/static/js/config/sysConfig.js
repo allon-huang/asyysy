@@ -1,1 +1,5 @@
-var context_path = "http://yysy.wicp.net/asyysy_core";
+var context_path = "[[${sys.domain}]]";
+
+function a(){
+    context_path = "[[${sys.domain}]]";
+}

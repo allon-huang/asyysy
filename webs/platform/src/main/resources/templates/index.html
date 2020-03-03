@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head th:replace="public/common::head(~{::title},~{::style},~{::link},~{::script})">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <meta name="referrer" content="never">
     <title>黄猿帅-[[${sys.domain }]]</title>
-    <script th:src="@{static/js/jquery.min.js}" ></script>
     <script th:src="@{static/js/echarts.min.js}"></script>
     <script th:src="@{static/js/china.js}"></script>
     <script th:src="@{static/js/echarts-gl.js}"></script>
@@ -18,8 +17,6 @@
             data-redirecturi="http://yysy.wicp.net/"
     ></script>-->
 
-    <script th:src="@{/static/js/config/sysConfig.js}"></script>
-    <script th:src="@{/static/js/common/common.js}"></script>
     <script th:src="@{/static/js/common/location.js}"></script>
 
     <style>

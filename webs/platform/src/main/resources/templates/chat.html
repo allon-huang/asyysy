@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh">
-<head>
+<head th:replace="public/common::head(~{::title},~{::style},~{::links},~{::script})">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,7 +100,7 @@
             }else{
                 console.log("您的浏览器支持WebSocket");
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-                var socketUrl= context_path + "/imserver/" + $("#pkid").val();
+                var socketUrl= [[${sys.domain}]] +"/imserver/" + $("#pkid").val();
                 console.log(socketUrl);
                 socketUrl=socketUrl.replace("https","ws").replace("http","ws");
                 console.log(socketUrl);

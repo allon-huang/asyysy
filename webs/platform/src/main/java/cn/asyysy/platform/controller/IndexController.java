@@ -61,8 +61,6 @@ public class IndexController extends BaseController {
         //.orNew()//SELECT id AS id,`name`,email,gender,age FROM employee WHERE (gender = ? AND name LIKE ?) OR (email LIKE ?)
         //.like("email", "123")
         ));
-        // 系统信息
-        request.setAttribute("sys", systemInfo());
         return  "index";
     }
 
@@ -76,8 +74,6 @@ public class IndexController extends BaseController {
         ew.setEntity(new ShortUrl());
         // 短网址
         request.setAttribute("shortUrlList", shortUrlService.selectList(ew));
-        // 系统信息
-        request.setAttribute("sys", systemInfo());
         // 新型肺炎数据
         request.setAttribute("ncpData", commonService.ncpApi());
         // 微信配置
@@ -91,8 +87,6 @@ public class IndexController extends BaseController {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
         request.setAttribute("user", user);
-        // 系统信息
-        request.setAttribute("sys", systemInfo());
         EntityWrapper<User> ew = new EntityWrapper<User>();
         ew.setEntity(new User());
         ew.ne("pkid", user.getPkid());

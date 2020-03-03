@@ -5,13 +5,15 @@ import cn.asyysy.app.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class LoginController extends BaseController {
 
 
     @PassToken
     @RequestMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
         return "login";
     }
 }

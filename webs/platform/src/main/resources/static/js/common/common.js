@@ -4,7 +4,6 @@ var wxConfig;
 // 新冠病毒数据
 var ncpInfo;
 
-
 var timerRunning = false;
 
 function init() {
@@ -761,7 +760,7 @@ function nowTimeRender() {
  * 微信-初始化
  */
 function initWx() {
-    common.ajaxPostJson(context_path + "/common/wxConfig",null,function (data) {
+    common.ajaxPostJson(domain + "/common/wxConfig",null,function (data) {
         wxConfig = data.data;
         wxFun(data.data)
     },function (data) {
@@ -823,7 +822,7 @@ function saveShortUrl(longUrl){
         return;
     }
     $("#short_url").html("");
-    common.ajaxPostJson(context_path + "/d/saveUrl",null,function (data) {
+    common.ajaxPostJson(domain + "/d/saveUrl",null,function (data) {
         var  html ="短网址：";
         html += '<a id="short_url_a" href="' + data.data.shortUrl +'" target="_blank">点击这里</a>'
         html += "<br><span>" + data.data.shortUrl + "</span>";
@@ -837,7 +836,7 @@ function saveShortUrl(longUrl){
  * 新冠病毒-初始化
  */
 function initNcp() {
-    common.ajaxPostJson(context_path + "/common/ncpInfo",null,function (data) {
+    common.ajaxPostJson(domain + "/common/ncpInfo",null,function (data) {
         // 反转义转换JSON
         ncpInfo = JSON.parse(oppositeMeaning(data.data))
         ncpFun(ncpInfo)

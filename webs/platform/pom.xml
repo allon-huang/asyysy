@@ -58,18 +58,29 @@
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>5.1</version>
-        </dependency><!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <build>
+
+        <!-- 资源目录 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--原文链接：https://blog.csdn.net/u010515155/article/details/78458232-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
         <!--打包后项目名-->

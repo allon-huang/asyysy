@@ -1,23 +1,15 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
+<head th:replace="public/common::head(~{::title},~{::style},~{::link},~{::script})">
     <title>登录</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="keywords" content="" />
     <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
     <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
-    <link rel="stylesheet" th:href="@{/static/css/jquery-confirm.css}">
-    <script th:src="@{/static/js/jquery.min.js }"></script>
-    <script th:src="@{/static/js/jquery.cookie.js }"></script>
-    <!--
-    http://www.jq22.com/demo/jqueryConfirm20160413/
-    jquery-confirm.js
-    -->
-    <script th:src="@{/static/js/jquery-confirm.js }"></script>
+
     <script th:src="@{static/js/canva_moving_effect.js}"></script>
-    <script th:src="@{/static/js/config/sysConfig.js}"></script>
-    <script th:src="@{/static/js/common/common.js}"></script>
+
     <style>
         #userInfo{
             color: #89a2b5;
@@ -37,6 +29,7 @@
         function hideURLbar() {
             window.scrollTo(0, 1);
         }
+
         $(function () {
             $("#login").hide();
             $("#register").hide();
@@ -60,16 +53,43 @@
 
             // 去聊天
             $("#chat").on("click",function () {
-               window.location.href = context_path + "/chat";
+               window.location.href = "[[${sys.domain}]]/chat";
             })
             // 校验是否登录
             checkLogin();
 
+            /*var mystatus = document.getElementById("mystatus")
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // 获取用户的 media 信息
+                navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+                    // 将麦克风的声音输入这个对象
+                    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+                    // 创建一个音频分析对象，采样的缓冲区大小为4096，输入和输出都是单声道
+                    scriptProcessor = audioContext.createScriptProcessor(4096,1,1);
+                    // 将该分析对象与麦克风音频进行连接
+                    mediaStreamSource.connect(scriptProcessor);
+                    // 此举无甚效果，仅仅是因为解决 Chrome 自身的 bug
+                    scriptProcessor.connect(audioContext.destination);
+                    // 开始处理音频
+                    scriptProcessor.onaudioprocess = function(e) {
+                        // 获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组
+                        let buffer = e.inputBuffer.getChannelData(0);
+                        // 获取缓冲区中最大的音量值
+                        let maxVal = Math.max.apply(Math, buffer);
+                        // 显示音量值
+                        mystatus.innerHTML =Math.round(maxVal * 100);
+                    };
+                }).catch((error) => {
+                    mystatus.innerHTML = '获取音频时好像出了点问题。' + error
+                });
+            } else {
+                mystatus.innerHTML = '不支持获取媒体接口'
+            }*/
         })
 
         // 退出登录
         function logout() {
-            common.ajaxPostJson(context_path + "/api/user/logout",null,function (data) {
+            common.ajaxPostJson("[[${sys.domain}]]/api/user/logout",null,function (data) {
                 // 退出登录
                 $.cookie("token",null);
                 $.confirm({
@@ -89,7 +109,7 @@
 
         // 校验是否登录
         function checkLogin() {
-            common.ajaxPostJsonBeforeSend(context_path + "/api/user/getUser",null,function(data){
+            common.ajaxPostJsonBeforeSend("[[${sys.domain}]]/api/user/getUser",null,function(data){
                 console.log(data);
                 setTimeout(function(){
                     // 已登录
@@ -117,7 +137,7 @@
                 userName : userName ,
                 password : password
             }
-            common.ajaxPostJson(context_path + "/api/user/register",JSON.stringify(data),function (data) {
+            common.ajaxPostJson("[[${sys.domain}]]/api/user/register",JSON.stringify(data),function (data) {
                 $.confirm({
                     animation: 'RotateYR',
                     content: JSON.stringify(data.msg),
@@ -139,7 +159,7 @@
                 userName : userName ,
                 password : password
             }
-            common.ajaxPostJson(context_path + "/api/user/login",JSON.stringify(data),function (data) {
+            common.ajaxPostJson("[[${sys.domain}]]/api/user/login",JSON.stringify(data),function (data) {
                 // 创建一个cookie并设置有效时间为 7天:
                 $.cookie("token", data.data,{ expires: 7 });
                 $.alert({
@@ -160,6 +180,7 @@
                 });
             })
         }
+
     </script>
 
    <!-- <link href="http://maxcdn.bootstrapcdn.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
@@ -176,13 +197,14 @@
 </div>
 <!-- //bg effect -->
 <!-- title -->
-<h1>登录<a href="javascript:;" style="font-size: 14px;float: right;" id="userInfo"></a></h1>
+<h1>登录<a href="javascript:;" style="font-size: 14px;float: right;" id="userInfo" th:text="${session?.user?.userName}"></a></h1>
 
 <!-- //title -->
 <!-- content -->
 <div class="sub-main-w3">
     <form id="form" method="post" onsubmit="return false;">
         <h2>登录信息
+            <span id="mystatus"></span>
             <i class="fas fa-level-down-alt"></i>
         </h2>
         <div class="form-style-agile">
