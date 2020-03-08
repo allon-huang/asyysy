@@ -1,5 +1,5 @@
 domain:
-  domain: http://www.asyysy.cn
+  domain: http://www.asyysy.cn//asyysy_core
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -9,9 +9,15 @@ domain:
     appsecret: 24ZQu9p9
     ncp_data_timeout: 600
   wx:
-    token:  hyy210381
+    token: hyy210381
+    appid: wxd5407394de781115
+    appsecret: e6e9bb852143305efc8802716d762629
+  qq:
+    app_id: 101852685
+    app_key: 0c157ca044b8f179fb167f3eb362faf3
+    redirect_uri: http://www.asyysy.cn/asyysy_core/api/qq/callback
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /asyysy_core
 spring:
@@ -34,4 +40,4 @@ spring:
     port: 6379
     timeout: 300
   thymeleaf:
-    cache: false
+    cache: true

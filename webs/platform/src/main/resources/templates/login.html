@@ -1,14 +1,21 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head th:replace="public/common::head(~{::title},~{::style},~{::link},~{::script})">
+<head th:include="common/header :: common_head(~{::title})"></head>
+<head>
     <title>登录</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="keywords" content="" />
     <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
     <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
-
     <script th:src="@{static/js/canva_moving_effect.js}"></script>
+    <!--QQ互联登录-->
+    <script type="text/javascript"  charset="utf-8"
+            src="//connect.qq.com/qc_jssdk.js"
+            th:data-appid="${sys.qqAppId}"
+            th:data-redirecturi="${sys.qqRedirectUri}"
+    data-callback="true"
+    ></script>
 
     <style>
         #userInfo{
@@ -30,7 +37,144 @@
             window.scrollTo(0, 1);
         }
 
+        // 退出登录
+        function logout() {
+            common.ajaxPostJsonAuthorization(domain + "/api/user/logout",null,function (data) {
+                // 退出登录
+                $.cookie("token",null);
+                $.confirm({
+                    title: "信息",
+                    animation: 'RotateYR',
+                    content: "退出登录成功",
+                    closeAnimation: 'scale'
+                });
+                // 校验是否登录
+                checkLogin();
+            },function (data) {
+                console.log(data.msg);
+                // 校验是否登录
+                checkLogin();
+            });
+        }
+
+        // qq登录成功
+        var cbLoginFun = function(oInfo, oOpts){
+            console.log(oInfo,oOpts);
+        }
+
+        // qq退出登录
+        var cbLogoutFun = function(opts){
+            console.log(oOpts);
+        }
+
+        // 校验是否登录
+        function checkLogin() {
+            common.ajaxPostJsonAuthorization(domain + "/api/user/getUser",null,function(data){
+                setTimeout(function(){
+                    // 已登录
+                    loginHtml(data.data);
+                },300)
+            },function(data){
+                // 未登录
+                logoutHtml();
+            })
+            // 验证qq登录
+            if (QC.Login.check()) {
+                QC.Login.getMe(function (openId, accessToken) {
+                    var data = {
+                        openId: openId,
+                        accessToken: accessToken
+                    };
+                   common.ajaxPostJsonAuthorization(domain + "/api/qq/saveQqInfo", JSON.stringify(data),function (data) {
+                   },function (data) {
+                   })
+                })
+            }
+        }
+
+        function loginHtml(userName) {
+            // 已登录
+            $("#userInfo").html(userName + "-<a href=\"javascript:logout();\">退出登录</a>");
+            $("#login").hide();
+            $("#register").hide();
+            $("#index").show();
+            $("#chat").show();
+        }
+
+        function logoutHtml() {
+            $("#login").show();
+            $("#register").show();
+            $("#index").hide();
+            $("#chat").hide();
+            $("#userInfo").html("请登录");
+        }
+
+        // 去注册
+        function register(userName,password) {
+            var data = {
+                userName : userName ,
+                password : password
+            }
+            common.ajaxPostJsonAuthorization(domain + "/api/user/register",JSON.stringify(data),function (data) {
+                $.confirm({
+                    animation: 'RotateYR',
+                    content: JSON.stringify(data.msg),
+                    closeAnimation: 'scale'
+                });
+            },function (data) {
+                $.alert({
+                    title: '提示信息',
+                    content: JSON.stringify(data.msg),
+                    confirm: function(){
+                    }
+                });
+            })
+        }
+
+        // 登录
+        function login(userName,password){
+            var data = {
+                userName : userName ,
+                password : password
+            }
+            common.ajaxPostJsonAuthorization(domain + "/api/user/login",JSON.stringify(data),function (data) {
+                // 创建一个cookie并设置有效时间为 7天:
+                $.cookie("token", data.data,{ expires: 7 });
+                $.alert({
+                    title: '提示信息',
+                    content: "用户：" + userName + "登录成功",
+                    confirm: function(){
+                    }
+                });
+                // 验证登录
+                checkLogin();
+            },function (data) {
+                $.alert({
+                    title: '提示信息',
+                    width:'400px',
+                    content: JSON.stringify(data.msg),
+                    confirm: function(){
+                    }
+                });
+            })
+        }
+
         $(function () {
+            QC.Login({
+                    //btnId：插入按钮的节点id，必选  
+                    btnId:"qqLoginBtn",
+                    //用户需要确认的scope授权项，可选，默认all  
+                    scope:"all",
+                    //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S  
+                    //size: "A_XL"
+            }, function(reqData, opts){
+                checkLogin();
+                console.log(reqData, opts)
+            }, function(opts){
+                console.log(opts)
+            });
+
+
             $("#login").hide();
             $("#register").hide();
             $("#index").hide();
@@ -53,7 +197,7 @@
 
             // 去聊天
             $("#chat").on("click",function () {
-               window.location.href = "[[${sys.domain}]]/chat";
+                window.location.href = domain + "/chat";
             })
             // 校验是否登录
             checkLogin();
@@ -87,104 +231,7 @@
             }*/
         })
 
-        // 退出登录
-        function logout() {
-            common.ajaxPostJson("[[${sys.domain}]]/api/user/logout",null,function (data) {
-                // 退出登录
-                $.cookie("token",null);
-                $.confirm({
-                    title: "信息",
-                    animation: 'RotateYR',
-                    content: "退出登录成功",
-                    closeAnimation: 'scale'
-                });
-                // 校验是否登录
-                checkLogin();
-            },function (data) {
-                console.log(data.msg);
-                // 校验是否登录
-                checkLogin();
-            });
-        }
-
-        // 校验是否登录
-        function checkLogin() {
-            common.ajaxPostJsonBeforeSend("[[${sys.domain}]]/api/user/getUser",null,function(data){
-                console.log(data);
-                setTimeout(function(){
-                    // 已登录
-                    $("#userInfo").html(data.data + "-<a href=\"javascript:logout();\">退出登录</a>");
-                    $("#login").hide();
-                    $("#register").hide();
-                    $("#index").show();
-                    $("#chat").show();
-                },300)
-            },function(data){
-                $("#login").show();
-                $("#register").show();
-                $("#index").hide();
-                $("#chat").hide();
-                console.log(data);
-                $("#userInfo").html("请登录");
-            },function(xhr){
-                xhr.setRequestHeader("Authorization", $.cookie("token"));
-            })
-        }
-
-        // 去注册
-        function register(userName,password) {
-            var data = {
-                userName : userName ,
-                password : password
-            }
-            common.ajaxPostJson("[[${sys.domain}]]/api/user/register",JSON.stringify(data),function (data) {
-                $.confirm({
-                    animation: 'RotateYR',
-                    content: JSON.stringify(data.msg),
-                    closeAnimation: 'scale'
-                });
-            },function (data) {
-                $.alert({
-                    title: '提示信息',
-                    content: JSON.stringify(data.msg),
-                    confirm: function(){
-                    }
-                });
-            })
-        }
-
-        // 登录
-        function login(userName,password){
-            var data = {
-                userName : userName ,
-                password : password
-            }
-            common.ajaxPostJson("[[${sys.domain}]]/api/user/login",JSON.stringify(data),function (data) {
-                // 创建一个cookie并设置有效时间为 7天:
-                $.cookie("token", data.data,{ expires: 7 });
-                $.alert({
-                    title: '提示信息',
-                    content: "用户：" + userName + "登录成功",
-                    confirm: function(){
-                    }
-                });
-                // 校验是否登录
-                checkLogin();
-            },function (data) {
-                $.alert({
-                    title: '提示信息',
-                    width:'400px',
-                    content: JSON.stringify(data.msg),
-                    confirm: function(){
-                    }
-                });
-            })
-        }
-
     </script>
-
-   <!-- <link href="http://maxcdn.bootstrapcdn.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
-    <link href="http://maxcdn.bootstrapcdn.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">-->
 
 </head>
 
@@ -197,7 +244,12 @@
 </div>
 <!-- //bg effect -->
 <!-- title -->
-<h1>登录<a href="javascript:;" style="font-size: 14px;float: right;" id="userInfo" th:text="${session?.user?.userName}"></a></h1>
+<h1>登录
+    <a href="#" onclick='' id="qqLoginBtn">
+        <img th:src="@{/static/images/qq_login.png}">
+    </a>
+    <a href="javascript:;" style="font-size: 14px;float: right;" id="userInfo" th:text="${session?.user?.userName}"></a>
+</h1>
 
 <!-- //title -->
 <!-- content -->

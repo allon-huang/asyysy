@@ -4,6 +4,8 @@ import cn.asyysy.app.model.core.User;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *  服务类
@@ -15,4 +17,8 @@ import com.baomidou.mybatisplus.service.IService;
 public interface UserService extends IService<User> {
 
     Page<User> selectPage(User user, Page<User> page);
+
+    User checkLoginThrowException(HttpServletRequest request);
+
+    User checkLogin(HttpServletRequest request);
 }

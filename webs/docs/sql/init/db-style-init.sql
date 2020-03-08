@@ -71,6 +71,28 @@ begin
         ) auto_increment = 1 comment '收到的微信消息';
     end if;
 
+    -- 收到的微信消息
+    set @num=0;
+    set @tableName='user';
+    select count(*) into @num from information_schema.TABLES where table_name=@tableName and TABLE_SCHEMA=DATABASE();
+    if @num = 0 then
+        create table user
+        (
+            pkid        bigint(20)   not null auto_increment comment '主键',
+            user_name        varchar(255) not null comment '用户名',
+            password     varchar(255) not null comment '密码',
+            e_mail  varchar(255) not null comment '邮箱',
+            qq    varchar(255)      not null comment 'QQ号',
+            telphone    varchar(255)      not null comment '手机号',
+            qq_open_id        varchar(255) not null comment 'qq登录openid',
+            qq_access_token        varchar(255) not null comment 'qq登录accessToken',
+            create_date datetime comment '创建时间',
+            type    varchar(255)      not null comment '类型',
+            update_date datetime comment '更新时间',
+            primary key (pkid)
+        ) auto_increment = 1 comment '收到的微信消息';
+    end if;
+
 end
 $$
 CALL P_IM_UPGRADE();

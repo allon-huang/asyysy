@@ -996,10 +996,16 @@ function dateFtt(fmt,date){
 
 
 common.ajaxPostJson = function(url, data, success, error){
-    common.ajaxPostJsonBeforeSend(url, data, success, error,function (xhr) {})
+    common.ajaxPostJsonBeforeSend(url, data, success, error,function(xhr) {})
 }
 
-common.ajaxPostJsonBeforeSend = function(url, data, success, error, beforeSend){
+common.ajaxPostJsonAuthorization = function(url, data, success, error){
+    common.ajaxPostJsonBeforeSend(url, data, success, error,function(xhr) {
+        xhr.setRequestHeader("Authorization", $.cookie("token"));
+    })
+}
+
+common.ajaxPostJsonBeforeSend = function(url, data, success, error, beforeSendFun){
     $.ajax({
         type: 'POST',
         url: url,
@@ -1007,7 +1013,7 @@ common.ajaxPostJsonBeforeSend = function(url, data, success, error, beforeSend){
         contentType: "application/json;charset=UTF-8",
         dataType : "json",
         beforeSend: function(xhr) {
-            beforeSend(xhr);
+            beforeSendFun(xhr);
         },
         success:function(data){
             if ("FAIL" == data.type) {
@@ -1020,4 +1026,45 @@ common.ajaxPostJsonBeforeSend = function(url, data, success, error, beforeSend){
             console.log(error);
         }
     })
+}
+
+
+// 根据城市编码获取城市名称
+common.getCityNameForCount = function(value){
+    if (value == '2101') {
+        return '沈阳市';
+    } else if (value == '2102') {
+        return '大连市';
+    } else if (value == '2103') {
+        return '鞍山市';
+    } else if (value == '2104') {
+        return '抚顺市';
+    } else if (value == '2105') {
+        return '本溪市';
+    } else if (value == '2106') {
+        return '丹东市';
+    } else if (value == '2107') {
+        return '锦州市';
+    } else if (value == '2108') {
+        return '营口市';
+    } else if (value == '2109') {
+        return '阜新市';
+    } else if (value == '2110') {
+        return '辽阳市';
+    } else if (value == '2111') {
+        return '盘锦市';
+    } else if (value == '2112') {
+        return '铁岭市';
+    } else if (value == '2113') {
+        return '朝阳市';
+    } else if (value == '2114') {
+        return '葫芦岛市';
+    } else if (value == '2100') {
+        return '辽宁省';
+    }
+    return "";
+}
+
+log = function (data) {
+    console.log(data);
 }

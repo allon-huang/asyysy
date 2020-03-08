@@ -3,9 +3,9 @@ package cn.asyysy.app.intercepter;
 
 import cn.asyysy.app.annotation.PassToken;
 import cn.asyysy.app.config.SystemInfo;
-import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.model.common.ApiResponse;
 import cn.asyysy.app.model.core.User;
+import cn.asyysy.app.service.user.UserService;
 import cn.asyysy.app.util.IpUtils;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 /**
  * 系统层次拦截器
@@ -43,27 +44,51 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private Environment env;
 
-    public SystemInterceptor(SystemInfo systemInfo, Environment env){
-        this.systemInfo =systemInfo;
-        this.env =env;
+    @Autowired
+    private UserService userService;
+
+    public SystemInterceptor(SystemInfo systemInfo, Environment env, UserService userService){
+        this.systemInfo = systemInfo;
+        this.env = env;
+        this.userService = userService;
     }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
+        /*//设置允许哪些域名应用进行ajax访问
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+        response.setHeader("Access-Control-Allow-Headers", " Origin, X-Requested-With, content-Type, Accept, Authorization");
+        response.setHeader("Access-Control-Max-Age","3600");*/
 
         request.setAttribute("sys", systemInfo);
-        if (request.getRequestURI().contains("/static/js/config/sysConfig.js")) {
+        if (request.getRequestURI().contains("/static")) {
+            return true;
         }
 
-        if (!request.getRequestURI().contains("static")) {
-           Date now = new Date();
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-           String ip = IpUtils.getIpAddress(request);
-           logger.info("\n请求时间:{} ip：{}\n请求：{}\n参数：{}",
-                   sdf.format(now),
-                   StringUtils.isEmpty(ip)? request.getRemoteAddr() : ip,
-                   request.getRequestURI(),
-                   (null == request.getParameterMap() ? "" : request.getParameterMap())) ;
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String ip = IpUtils.getIpAddress(request);
+        StringBuilder paramsStr = new StringBuilder();
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String key = parameterNames.nextElement();
+            paramsStr.append("\n########### ASYYSY #################参数：")
+                    .append(key).append("=").append(request.getParameter(key));
         }
+        if ((null == paramsStr || StringUtils.isEmpty(paramsStr.toString())) && StringUtils.isNotEmpty(request.getQueryString())) {
+                paramsStr = new StringBuilder(request.getQueryString());
+        }
+        logger.info("" +
+                       "\n########### ASYYSY #################    START   #################" +
+                       "\n########### ASYYSY #################    请求时间:{} - ip：{}" +
+                       "\n########### ASYYSY #################    请求：   {}" +
+                       "{}" +
+                       "\n########### ASYYSY #################    END     #################" +
+                       "\n",
+               sdf.format(now),
+               StringUtils.isEmpty(ip)? request.getRemoteAddr() : ip,
+               request.getRequestURI(), paramsStr);
+
         HttpSession session = request.getSession();
         //如果不是映射到方法直接通过
         if(!(object instanceof HandlerMethod)){
@@ -78,9 +103,10 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
         }
-        Object userObj = session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
-        if (userObj == null) {
-            //检查是否有ResponseBody注释，有则跳过验证
+        // 校验是否登录
+        User user = userService.checkLogin(request);
+        if (user == null) {
+            // 检查是否有ResponseBody注释，有则跳过验证
             if(method.isAnnotationPresent(ResponseBody.class)){
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json; charset=utf-8");
@@ -100,7 +126,6 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect( "login");
             return true;
         }
-        User user = (User)userObj;
         logger.info("用户:{}-一登陆登录", user.getUserName());
         return true;
     }

@@ -12,64 +12,73 @@ public class SystemInfo {
      * 全站domain
      */
     @Value("${domain.domain}")
-    public String domain;
+    private String domain;
 
     /**
      * 短网址domain
      */
     @Value("${domain.short-url.domain}")
-    public String shortUrlDomain;
+    private String shortUrlDomain;
 
     /**
      * 新型肺炎请求地址
      */
     @Value("${domain.tianqiapi_com.ncp_api_url}")
-    public String ncpApiUrl;
+    private String ncpApiUrl;
 
     /**
      * tianqiapi appid
      */
     @Value("${domain.tianqiapi_com.appid}")
-    public String weatherAppid;
+    private String weatherAppid;
 
     /**
      *  tianqiapi appsecret
      */
     @Value("${domain.tianqiapi_com.appsecret}")
-    public String weatherAppSecret;
+    private String weatherAppSecret;
 
     @Value("${domain.tianqiapi_com.ncp_data_timeout}")
-    public int ncpDataTimeout;
+    private int ncpDataTimeout;
 
     /**
      * 新型肺炎接口版本号参数
      */
     @Value("${domain.tianqiapi_com.ncp_api_version}")
-    public String ncpApiVersion;
+    private String ncpApiVersion;
 
     /**
      * 项目名称
      */
     @Value("${server.servlet.context-path}")
-    public String contextPath;
+    private String contextPath;
 
     /**
      * 微信token
      */
     @Value("${domain.wx.token}")
-    public String wxToken;
+    private String wxToken;
 
     /**
      * 微信appid
      */
     @Value("${domain.wx.appid}")
-    public String wxAppid;
+    private String wxAppid;
 
     /**
      * 微信appsecret
      */
     @Value("${domain.wx.appsecret}")
-    public String wxAppsecret;
+    private String wxAppsecret;
+
+    @Value("${domain.qq.app_id}")
+    private String qqAppId;
+
+    @Value("${domain.qq.app_key}")
+    private String qqAppKey;
+
+    @Value("${domain.qq.redirect_uri}")
+    private String qqRedirectUri;
 
     /**
      * Springboot初始化系统配置

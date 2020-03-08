@@ -66,7 +66,7 @@ public class ApiUserController {
     UserService userService;
 
     @PostMapping("save")
-    public Object save(@RequestBody User user){
+    public ApiResponse save(@RequestBody User user){
         logger.info("user/save");
         if (null == user) {
             return ApiResponse.ERROR("用户为空");
@@ -94,7 +94,7 @@ public class ApiUserController {
     }
 
     @PutMapping("update")
-    public Object update(@RequestBody User user){
+    public ApiResponse update(@RequestBody User user){
         logger.info("user/update");
         if (null == user) {
             return ApiResponse.ERROR("用户为空");
@@ -117,13 +117,13 @@ public class ApiUserController {
     }
 
     @DeleteMapping("delUser")
-    public Object delUser(@RequestParam Long pkid){
+    public ApiResponse delUser(@RequestParam Long pkid){
         boolean result = userService.deleteById(pkid);
         return ApiResponse.SUCCESS("删除用户",result);
     }
 
     @GetMapping("list")
-    public Object list(){
+    public ApiResponse list(){
         EntityWrapper<User> entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new User());
         List<User> list = userService.selectList(entityWrapper);
@@ -141,7 +141,7 @@ public class ApiUserController {
 
     @PassToken
     @PostMapping("register")
-    public Object register(@RequestBody User user){
+    public ApiResponse register(@RequestBody User user){
         logger.info("user/register");
         try {
             if(StringUtils.isEmpty(user.getUserName())){
@@ -180,7 +180,7 @@ public class ApiUserController {
     @ApiImplicitParam(name = "userIn", value = "用户实体", paramType = "path", required = true, dataType = "Integer")
     @PassToken
     @PostMapping("login")
-    public Object login(HttpServletRequest request, HttpServletResponse response, @RequestBody User userIn){
+    public ApiResponse login(HttpServletRequest request, HttpServletResponse response, @RequestBody User userIn){
         try {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
@@ -195,8 +195,6 @@ public class ApiUserController {
                 }
                 throw new BaseException("已登录");
             }
-            String token = TokenUtil.createJwtToken(userName);
-            System.out.println("______________________token:" + token);
             if(StringUtils.isEmpty(userName)){
                 throw new BaseException("用户名不可为空");
             }
@@ -214,12 +212,13 @@ public class ApiUserController {
             if(!password.equals(user.getPassword())){
                 throw new BaseException("用户密码错误");
             }
+            String token = TokenUtil.createJwtToken(userName);
+            System.out.println("______________________token:" + token);
             // session超时时间
             session.setMaxInactiveInterval(Integer.valueOf(SESSION_TIMEOUT));
             session.setAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY, user);
-
             // Cookie
-            Cookie cookie = new Cookie(userName, token);
+            Cookie cookie = new Cookie("token", token);
             //单位：秒
             cookie.setMaxAge(60*60*24);
             response.addCookie(cookie);
@@ -237,7 +236,7 @@ public class ApiUserController {
 
     @UserToken
     @RequestMapping("logout")
-    public Object logout(HttpServletRequest request){
+    public ApiResponse  logout(HttpServletRequest request){
 
         // 已登录获取user
         //User user = (User)session.getAttribute(Constants.COMMON.SESSION_API_USER_KEY);
@@ -296,27 +295,11 @@ public class ApiUserController {
      */
     @PassToken
     @RequestMapping("getUser")
-    public Object getUser(HttpServletRequest request){
+    public ApiResponse getUser(HttpServletRequest request){
         try{
-            HttpSession session = request.getSession();
-            // 已登录获取user
-            Object user = session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
-            boolean loginFlag = (null == user);
-            logger.info("user/getUser-是否登录：" + !loginFlag);
-            // 未登录
-            if (loginFlag) {
-                throw new BaseException(BaseConsts.MSG.UN_ON_LINE);
-            }
-            //获取请求头的token
-            String token=request.getHeader("Authorization");
-            //token=null;
-            if(StringUtils.isEmpty(token)) {
-                throw new BaseException("TOKEN为空");
-            }
-            //获取token中的用户信息
-            Claims claims = TokenUtil.parseJWT(token);
-
-            return ApiResponse.SUCCESS(BaseConsts.MSG.ON_LINE, claims.getId());
+            // 校验是否登录
+            User user = userService.checkLoginThrowException(request);
+            return ApiResponse.SUCCESS(BaseConsts.MSG.ON_LINE, user.getUserName());
         }catch (BaseException e){
             return ApiResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"业务异常:" +  e.getMessage());
         }catch (ExpiredJwtException e){
@@ -333,7 +316,7 @@ public class ApiUserController {
      */
     @PassToken
     @PostMapping("getOnLineCount")
-    public Object getOnLineCount(HttpServletRequest request){
+    public ApiResponse getOnLineCount(HttpServletRequest request){
         // 在线人数
         AtomicInteger userCount = SessionListener.userCount;
         return ApiResponse.SUCCESS(BaseConsts.MSG.ON_LINE_SUM, userCount);

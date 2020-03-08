@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <footer th:fragment="common_head(title)">
+        <title th:replace="${title}">这里是标题</title>
+        <!--    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+            <meta name="format-detection" content="telephone=no"/>
+            <meta name="format-detection" content="address=no"/>-->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" sizes="" th:href="@{/static/images/common/icon/icon-100.png}"/>
+        <script>
+            // 初始化网站domain
+            var domain = "[[${sys.domain}]]"
+        </script>
+        <script th:src="@{/static/js/config/sysConfig.js}"></script>
+        <script th:src="@{/static/js/common/common.js}"></script>
+        <link rel="stylesheet" th:href="@{/static/css/jquery-confirm.css}">
+        <script th:src="@{/static/js/jquery.min.js }"></script>
+        <script th:src="@{/static/js/jquery.cookie.js }"></script>
+        <!--
+        http://www.jq22.com/demo/jqueryConfirm20160413/
+        jquery-confirm.js
+        -->
+        <script th:src="@{/static/js/jquery-confirm.js }"></script>
+    </footer>
+</head>
+</html>

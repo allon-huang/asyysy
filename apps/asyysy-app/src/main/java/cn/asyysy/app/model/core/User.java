@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author huangyaoyu
@@ -41,6 +41,18 @@ public class User {
      * 手机号
      */
     private String telphone;
+    /**
+     * qq登录openid
+     */
+    private String qqOpenId;
+    /**
+     * qq登录accessToken
+     */
+    private String qqAccessToken;
+    /**
+     * qq UnionId
+     */
+    private String qqUnionId;
     /**
      * 创建时间
      */

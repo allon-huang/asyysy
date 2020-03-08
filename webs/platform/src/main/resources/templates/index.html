@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="public/common::head(~{::title},~{::style},~{::link},~{::script})">
+<head th:include="common/header :: common_head(~{::title})"></head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <meta name="referrer" content="never">
@@ -10,14 +11,10 @@
     <script th:src="@{static/js/echarts-gl.js}"></script>
     <!--微信jdsdk-->
     <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <!--JS SDK基于QQ互联-->
-   <!-- <script type="text/javascript"  charset="utf-8"
-            src="http://connect.qq.com/qc_jssdk.js"
-            data-appid="1107957541"
-            data-redirecturi="http://yysy.wicp.net/"
-    ></script>-->
 
     <script th:src="@{/static/js/common/location.js}"></script>
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true" ></script>
+
 
     <style>
         body{
@@ -57,7 +54,7 @@
             // 新冠病毒
             initNcp();
             // 微信
-            initWx();
+            //initWx();
             // 当前时间
             initNowDate();
             init();

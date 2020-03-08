@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
-<head th:replace="public/common::head(~{::title},~{::style},~{::links},~{::script})">
+<head th:include="common/header :: common_head(~{::title})"></head>
+<head>
 <title>Purple_loginform Website Template | Home :: w3layouts</title>
 <link th:src="@{/static/css/style.css}" rel="stylesheet" type="text/css" media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

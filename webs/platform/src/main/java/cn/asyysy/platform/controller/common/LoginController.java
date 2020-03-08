@@ -14,6 +14,7 @@ public class LoginController extends BaseController {
     @PassToken
     @RequestMapping("/login")
     public String login(HttpServletRequest request) {
+
         return "login";
     }
 }

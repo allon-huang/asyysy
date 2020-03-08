@@ -1,5 +1,5 @@
 domain:
-  domain: http://localhost:8080/asyysy_core
+  domain: http://yysy.wicp.net//asyysy_core
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -12,6 +12,10 @@ domain:
     token: hyy210381
     appid: wxd5407394de781115
     appsecret: e6e9bb852143305efc8802716d762629
+  qq:
+    app_id: 101852685
+    app_key: 0c157ca044b8f179fb167f3eb362faf3
+    redirect_uri: http://yysy.wicp.net/asyysy_core/api/qq/callback
 server:
   port: 8080
   servlet:
