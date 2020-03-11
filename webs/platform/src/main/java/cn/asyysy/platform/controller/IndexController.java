@@ -92,4 +92,10 @@ public class IndexController extends BaseController {
         List<User> list = userService.selectList(ew);
         return ApiResponse.SUCCESS("获取用户列表成功", list);
     }
+
+    @PassToken
+    @RequestMapping(value = "api")
+    public String api(){
+        return "redirect:/documentation/swagger-ui.html";
+    }
 }

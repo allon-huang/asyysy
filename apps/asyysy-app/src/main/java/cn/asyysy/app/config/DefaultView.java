@@ -24,6 +24,13 @@ public class DefaultView extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
+        // swagger
+        //registry.addRedirectViewController("/documentation/v2/api-docs", "/v2/api-docs?group=restful-api");
+        registry.addRedirectViewController("/documentation/swagger-resources/configuration/ui","/swagger-resources/configuration/ui");
+        registry.addRedirectViewController("/documentation/v2/api-docs","/v2/api-docs");
+        registry.addRedirectViewController("/documentation/swagger-resources/configuration/security","/swagger-resources/configuration/security");
+        registry.addRedirectViewController("/documentation/swagger-resources", "/swagger-resources");
         super.addViewControllers(registry);
     }
 /*

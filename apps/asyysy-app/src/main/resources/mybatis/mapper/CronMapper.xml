@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.asyysy.app.mapper.user.CronMapper">
+<mapper namespace="cn.asyysy.app.mapper.CronMapper">
+
+    <!--&lt;!&ndash; 开启二级缓存 &ndash;&gt;
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.asyysy.app.model.Cron">
@@ -12,9 +15,5 @@
     <sql id="Base_Column_List">
         cron_id, cron
     </sql>
-
-    <select id="getCron" resultType="java.lang.String" >
-        select cron from cron limit 1
-    </select>
 
 </mapper>

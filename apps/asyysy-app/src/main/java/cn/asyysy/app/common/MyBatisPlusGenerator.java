@@ -30,7 +30,7 @@ public class MyBatisPlusGenerator {
                 // 作者
                 .setAuthor("huangyaoyu")
                 // 生成路径
-                .setOutputDir("F:\\codes\\java\\asyysy_core_gitee\\src\\main\\java")
+                .setOutputDir("D:\\codes\\asyysy\\apps\\asyysy-app\\src\\main\\java")
                 //.setOutputDir("F:\\stsworkspace\\MyBatisPlusGenerator\\src\\main\\java") // 生成路径
                 // 文件覆盖
                 .setFileOverride(true)
@@ -49,8 +49,8 @@ public class MyBatisPlusGenerator {
         // 设置数据库类型
         dsConfig.setDbType(DbType.MYSQL)
                 .setDriverName("com.mysql.jdbc.Driver")
-                .setUrl("jdbc:mysql://1y969g9950.imwork.net:13376/asyysy_core?useUnicode=true&characterEncoding=utf8")
-                .setUsername("asyysy")
+                .setUrl("jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true")
+                .setUsername("root")
                 .setPassword("123123112233");
 
         //3. 策略配置globalConfiguration中
@@ -67,7 +67,7 @@ public class MyBatisPlusGenerator {
 
         //4. 包名策略配置
         PackageConfig pkConfig = new PackageConfig();
-        pkConfig.setParent("cn.asyysy.core")
+        pkConfig.setParent("cn.asyysy.app")
                 //dao
                 .setMapper("mapper")
                 //servcie

@@ -1,4 +1,4 @@
-package cn.asyysy.app.mapper.user;
+package cn.asyysy.app.mapper;
 
 import cn.asyysy.app.model.Cron;
 import com.baomidou.mybatisplus.mapper.BaseMapper;

@@ -1,9 +1,8 @@
 package cn.asyysy.app.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
+import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
 /**
@@ -12,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author huangyaoyu
- * @since 2019-06-04
+ * @since 2020-03-11
  */
 public class Cron extends Model<Cron> {
 
@@ -47,7 +46,7 @@ public class Cron extends Model<Cron> {
     @Override
     public String toString() {
         return "Cron{" +
-        ", cronId=" + cronId +
+        "cronId=" + cronId +
         ", cron=" + cron +
         "}";
     }
