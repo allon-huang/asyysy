@@ -5,10 +5,10 @@ import cn.asyysy.app.common.wechat.CheckoutUtil;
 import cn.asyysy.app.common.wechat.MessageUtil;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.controller.BaseController;
+import cn.asyysy.app.model.wechat.TextMeaasge;
 import cn.asyysy.app.model.wechat.WxConfig;
 import cn.asyysy.app.model.wechat.WxMessage;
 import cn.asyysy.app.model.wechat.WxReplyModel;
-import cn.asyysy.app.model.wechat.TextMeaasge;
 import cn.asyysy.app.service.redis.RedisBaseService;
 import cn.asyysy.app.service.user.WxMainService;
 import cn.asyysy.app.service.user.WxReplyModelService;
@@ -39,7 +39,7 @@ public class WxMpConroller extends BaseController {
      */
     @Autowired
     private RedisBaseService redisBaseService;
-    
+
     @GetMapping(value = "/token")
     public String  geTokenGetForWx(Model model, @RequestParam Map<String,Object> params, HttpServletRequest request){
         logger.info("=============开始验证（Token）=================geTokenGetForWx===============params：" + params.toString());
@@ -110,7 +110,7 @@ public class WxMpConroller extends BaseController {
             //注意这里的toUserName 是刚才接收xml中的FromUserName
             textMessage.setFromUserName(toUserName);
             textMessage.setCreateTime(System.currentTimeMillis());
-            
+
             //System.out.println("str-------"+str);
             List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelByKeyword(message);
             if(wxReplys != null && wxReplys.size() != 0  ){

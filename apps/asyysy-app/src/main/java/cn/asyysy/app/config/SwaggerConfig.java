@@ -1,4 +1,4 @@
-package cn.asyysy.app.common;
+package cn.asyysy.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,14 +26,14 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.asyysy"))
+                .apis(RequestHandlerSelectors.basePackage("cn.asyysy.platform.controller"))
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("ASYYSY_Swagger")
-                .termsOfServiceUrl("http://www.woshinibaba.cn/")
+                .title("黄猿帅_Swagger")
+                .termsOfServiceUrl("http://www.asyysy.cn/asyysy_core/h5")
                 .version("0.0.1")
                 .build();
     }
