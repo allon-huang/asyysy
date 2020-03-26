@@ -1,5 +1,7 @@
 domain:
-  domain: http://yysy.wicp.net//asyysy_core
+  # domain http://localhost:8080//asyysy_core
+  # https://www.asyysy.cn/asyysy_core
+  domain: https://www.asyysy.cn/asyysy_core
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -27,6 +29,24 @@ spring:
     password: 123123112233
     url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    #   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
     initialization-mode: never
     schema: classpath:database/style.sql

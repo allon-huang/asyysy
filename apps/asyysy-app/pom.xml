@@ -209,6 +209,13 @@
         </dependency>
         <!-- swagger2 依赖结束 -->
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.16</version>
+        </dependency>
+
+
 
     </dependencies>
 

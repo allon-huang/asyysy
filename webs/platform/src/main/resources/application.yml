@@ -36,3 +36,5 @@ spring:
     enabled: false
   resources: /static/**
   static-locations: classpath:/static/
+  session:
+    store-type: redis # session 的存储方式
