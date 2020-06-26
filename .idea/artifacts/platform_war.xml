@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="platform:war">
+    <output-path>$PROJECT_DIR$/webs/platform/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>platform</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="asyysy_core.war">
+      <element id="artifact" artifact-name="platform:war exploded" />
+    </root>
+  </artifact>
+</component>

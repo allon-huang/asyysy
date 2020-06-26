@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="referrer" content="never">
+    <title>黄猿帅-[[${sys.domain }]]</title>
+    <script th:src="@{/../../js/jquery.min.js}" ></script>
+    <!--JS SDK基于QQ互联-->
+   <script type="text/javascript"  charset="utf-8"
+            src="//connect.qq.com/qc_jssdk.js"
+            data-appid="101852685"
+            data-redirecturi="http://yysy.wicp.net/"
+    ></script>
+
+    <script th:src="@{/../../js/config/sysConfig.js}"></script>
+
+    <style>
+        body{
+            /*background-color: #6C496F;*/
+            margin: 0 auto;
+        }
+    </style>
+
+    <script>
+        $(function(){
+            $("#domain").html(window.location.origin);
+        })
+        QC.Login({
+            btnId:"qqLoginBtn"	//插入按钮的节点id
+        });
+        function toLoginQQ(){
+            var oOpts = {
+                appId:"101852685",
+                redirectURI:"http://yysy.wicp.net//asyysy_core/chat"
+            }
+            QC.Login.showPopup(oOpts)
+           /* //以下为按钮点击事件的逻辑。注意这里要重新打开窗口
+            //否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新窗口
+            var A=window.open("oauth/qq/index.php","TencentLogin","width=450,height=320,menubar=0,scrollbars=1,resizable=1,status=1,titlebar=0,toolbar=0,location=1");*/
+        }
+        var socket;
+        function openSocket() {
+            if(typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            }else{
+                console.log("您的浏览器支持WebSocket");
+                //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+                var socketUrl= "[[${sys.domain}]]/imserver/"+$("#userId").val();
+                socketUrl=socketUrl.replace("https","ws").replace("http","ws");
+                if(socket!=null){
+                    socket.close();
+                    socket=null;
+                }
+                socket = new WebSocket(socketUrl);
+                //打开事件
+                socket.onopen = function() {
+                    console.log("websocket已打开");
+                    //socket.send("这是来自客户端的消息" + location.href + new Date());
+                };
+                //获得消息事件
+                socket.onmessage = function(msg) {
+                    console.log(msg.data);
+                    //发现消息进入    开始处理前端触发逻辑
+                };
+                //关闭事件
+                socket.onclose = function() {
+                    console.log("websocket已关闭");
+                };
+                //发生了错误事件
+                socket.onerror = function() {
+                    console.log("websocket发生了错误");
+                }
+            }
+        }
+        function sendMessage() {
+            if(typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            }else {
+                console.log("您的浏览器支持WebSocket");
+                console.log('{"toUserId":"'+$("#toUserId").val()+'","contentText":"'+$("#contentText").val()+'"}');
+                socket.send('{"toUserId":"'+$("#toUserId").val()+'","contentText":"'+$("#contentText").val()+'"}');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="centent">
+        <h1 id="domain"></h1>
+        <a href="#" onclick='' id="qqLoginBtn">
+            <img th:src="@{/tencent/img/qq_login.png}">
+        </a>
+        <!--<span id="qqLoginBtn"></span>
+        <script type="text/javascript">
+            QC.Login({
+                btnId:"qqLoginBtn"	//插入按钮的节点id
+            });
+        </script>-->
+
+        <p>【userId】：<div><input id="userId" name="userId" type="text" value="10"></div>
+        <p>【toUserId】：<div><input id="toUserId" name="toUserId" type="text" value="20"></div>
+        <p>【toUserId】：<div><input id="contentText" name="contentText" type="text" value="hello websocket"></div>
+        <p>【操作】：<div><button onclick="openSocket()">开启socket</button></div>
+        <p>【操作】：<div><button onclick="sendMessage()">发送消息</button></div>
+
+        <div class="now_time_div margin_top_20" style="margin-bottom: 10px;">
+            当前时间
+            <span id="now_time_span" ></span>
+        </div>
+        <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=LkZXVxwfHh0WH25IQVZDT0dCAE1BQw" style="text-decoration:none;">
+            <img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/>
+        </a>
+    </div>
+</body>
+</html>

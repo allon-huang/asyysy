@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head th:include="common/header :: common_head(~{::title})"></head>
+<head>
+    <title>重名查询信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
+    <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
+    <script th:src="@{static/js/canva_moving_effect.js}"></script>
+
+    <style>
+    </style>
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+        $(function () {
+            $("#search").click(function () {
+                var name = $("#name").val();
+                var data = {
+                    name : name
+                }
+                common.ajaxPostJsonBeforeSend(domain + "/common/getCommonName", JSON.stringify(data),function (data) {
+                    $("#search").attr("disabled", false);
+                    $.alert({
+                        title: '提示信息',
+                        content: "数据查询【" + name + "】中查询成功",
+                        confirm: function(){
+                        }
+                    });
+
+                    var html = "<br><br>查询结果<br>";
+                    var temp = JSON.parse(data.data).data;
+                    if (null == temp || temp.length == 0 ) {
+                       html+= "您查询的姓名：\"" + name + "\" 暂无数据<br>";
+                       $("#data").html(html);
+                       return;
+                    }
+                    log("您查询的姓名：\"" + name + "\":");
+                    for(var i = (temp.length-1) ; i>=0;i--) {
+                        var item = temp[i];
+                        html += "在" + common.getCityNameForCount(item.regionCode) + "有： 男性：" + item.male + "人 女性："  + item.female + "人<br>";
+                    }
+                    $("#data").html(html);
+
+                },function (data) {
+                   $("#search").attr("disabled", false);
+                   $.alert({
+                        title: '提示信息',
+                        content: data.msg,
+                        confirm: function(){
+                        }
+                    });
+                }, function (xhr) {
+                    $("#data").html("");
+                    $("#search").attr("disabled", true);
+                    $.alert({
+                        title: '提示信息',
+                        content: "数据查询【" + name + "】中请稍后",
+                        confirm: function(){
+                        }
+                    });
+                });
+            })
+        })
+    </script>
+
+</head>
+
+<body>
+<!-- bg effect -->
+<div id="bg">
+    <canvas></canvas>
+    <canvas></canvas>
+    <canvas></canvas>
+</div>
+<!-- //bg effect -->
+<!-- title -->
+<h1>H5</h1>
+
+<!-- //title -->
+<!-- content -->
+<div class="sub-main-w3">
+    <form method="post" onsubmit="return false;">
+        <h2>重名查询信息-辽宁省实有户籍人口
+            <span id="mystatus"></span>
+            <i class="fas fa-level-down-alt"></i>
+        </h2>
+        <div class="form-style-agile">
+            <label>
+                <i class="fas fa-user"></i>
+                查询的姓名
+            </label>
+            <input placeholder="请输入查询的姓名" id="name" type="text" required="">
+        </div>
+        <!-- checkbox -->
+        <div class="wthree-text">
+            <ul>
+                <li>
+                    <!--<label class="anim">
+                        <input type="checkbox" class="checkbox" id="keepLogin">
+                        <span>保持登录</span>
+                    </label>-->
+                </li>
+                <li>
+                </li>
+            </ul>
+        </div>
+        <input type="submit" id="search" value="查询">
+
+        <div id="data">
+
+        </div>
+    </form>
+</div>
+<!-- //content -->
+
+<!-- copyright -->
+<div class="footer">
+    <p>Copyright &copy; 2020 黄猿帅.页面模板来自【<a target="_blank" href="http://sc.chinaz.com/moban/">chinaz.com</a>】</p>
+</div>
+<!-- //copyright -->
+</body>
+
+</html>

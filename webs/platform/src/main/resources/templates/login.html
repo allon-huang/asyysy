@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head th:include="common/header :: common_head(~{::title})"></head>
+<head>
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
+    <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
+    <script th:src="@{static/js/canva_moving_effect.js}"></script>
+    <!--QQ互联登录-->
+    <script type="text/javascript"  charset="utf-8"
+            src="//connect.qq.com/qc_jssdk.js"
+            th:data-appid="${sys.qqAppId}"
+            th:data-redirecturi="${sys.qqRedirectUri}"
+    data-callback="true"
+    ></script>
+
+    <style>
+        #userInfo{
+            color: #89a2b5;
+            font-style:normal;
+            cursor: unset;
+        }
+        #userInfo a{
+            color: #89a2b5;
+            cursor: pointer;
+        }
+
+        #wxLoginBtn{
+
+        }
+    </style>
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+
+        // 退出登录
+        function logout() {
+            common.ajaxPostJsonAuthorization(domain + "/api/user/logout",null,function (data) {
+                // 退出登录
+                $.cookie("token",null);
+                $.confirm({
+                    title: "信息",
+                    animation: 'RotateYR',
+                    content: "退出登录成功",
+                    closeAnimation: 'scale'
+                });
+                // 校验是否登录
+                checkLogin();
+            },function (data) {
+                console.log(data.msg);
+                // 校验是否登录
+                checkLogin();
+            });
+        }
+
+        // qq登录成功
+        var cbLoginFun = function(oInfo, oOpts){
+            console.log(oInfo,oOpts);
+        }
+
+        // qq退出登录
+        var cbLogoutFun = function(opts){
+            console.log(oOpts);
+        }
+
+        // 校验是否登录
+        function checkLogin() {
+            common.ajaxPostJsonAuthorization(domain + "/api/user/getUser",null,function(data){
+                setTimeout(function(){
+                    // 已登录
+                    loginHtml(data.data);
+                },300)
+            },function(data){
+                // 未登录
+                logoutHtml();
+            })
+            // 验证qq登录
+            if (QC.Login.check()) {
+                QC.Login.getMe(function (openId, accessToken) {
+                    var data = {
+                        openId: openId,
+                        accessToken: accessToken
+                    };
+                   common.ajaxPostJsonAuthorization(domain + "/api/qq/saveQqInfo", JSON.stringify(data),function (data) {
+                   },function (data) {
+                   })
+                })
+            }
+        }
+
+        function loginHtml(userName) {
+            // 已登录
+            $("#userInfo").html(userName + "-<a href=\"javascript:logout();\">退出登录</a>");
+            $("#login").hide();
+            $("#register").hide();
+            $("#index").show();
+            $("#chat").show();
+        }
+
+        function logoutHtml() {
+            $("#login").show();
+            $("#register").show();
+            $("#index").hide();
+            $("#chat").hide();
+            $("#userInfo").html("请登录");
+        }
+
+        // 去注册
+        function register(userName,password) {
+            var data = {
+                userName : userName ,
+                password : password
+            }
+            common.ajaxPostJsonAuthorization(domain + "/api/user/register",JSON.stringify(data),function (data) {
+                $.confirm({
+                    animation: 'RotateYR',
+                    content: JSON.stringify(data.msg),
+                    closeAnimation: 'scale'
+                });
+            },function (data) {
+                $.alert({
+                    title: '提示信息',
+                    content: JSON.stringify(data.msg),
+                    confirm: function(){
+                    }
+                });
+            })
+        }
+
+        // 登录
+        function login(userName,password){
+            var data = {
+                userName : userName ,
+                password : password
+            }
+            common.ajaxPostJsonAuthorization(domain + "/api/user/login",JSON.stringify(data),function (data) {
+                // 创建一个cookie并设置有效时间为 7天:
+                $.cookie("token", data.data,{ expires: 7 });
+                $.alert({
+                    title: '提示信息',
+                    content: "用户：" + userName + "登录成功",
+                    confirm: function(){
+                    }
+                });
+                // 验证登录
+                checkLogin();
+            },function (data) {
+                $.alert({
+                    title: '提示信息',
+                    width:'400px',
+                    content: JSON.stringify(data.msg),
+                    confirm: function(){
+                    }
+                });
+            })
+        }
+
+        $(function () {
+            QC.Login({
+                    //btnId：插入按钮的节点id，必选  
+                    btnId:"qqLoginBtn",
+                    //用户需要确认的scope授权项，可选，默认all  
+                    scope:"all",
+                    //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S  
+                    //size: "A_XL"
+            }, function(reqData, opts){
+                checkLogin();
+                console.log(reqData, opts)
+            }, function(opts){
+                console.log(opts)
+            });
+
+
+            $("#login").hide();
+            $("#register").hide();
+            $("#index").hide();
+            $("#chat").hide();
+            // 登录
+            $("#login").on("click",function () {
+                var userName = $.trim($("#userName").val());
+                var password = $.trim($("#password").val());
+                // 去登录
+                login(userName,password);
+            })
+
+            // 注册
+            $("#register").on("click",function () {
+                var userName = $.trim($("#userName").val());
+                var password = $.trim($("#password").val());
+                // 去注册
+                register(userName,password);
+            })
+
+            // 去聊天
+            $("#chat").on("click",function () {
+                window.location.href = domain + "/chat";
+            })
+            // 校验是否登录
+            checkLogin();
+            // 初始化微信参数
+            initWx();
+
+
+            /*var mystatus = document.getElementById("mystatus")
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // 获取用户的 media 信息
+                navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+                    // 将麦克风的声音输入这个对象
+                    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+                    // 创建一个音频分析对象，采样的缓冲区大小为4096，输入和输出都是单声道
+                    scriptProcessor = audioContext.createScriptProcessor(4096,1,1);
+                    // 将该分析对象与麦克风音频进行连接
+                    mediaStreamSource.connect(scriptProcessor);
+                    // 此举无甚效果，仅仅是因为解决 Chrome 自身的 bug
+                    scriptProcessor.connect(audioContext.destination);
+                    // 开始处理音频
+                    scriptProcessor.onaudioprocess = function(e) {
+                        // 获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组
+                        let buffer = e.inputBuffer.getChannelData(0);
+                        // 获取缓冲区中最大的音量值
+                        let maxVal = Math.max.apply(Math, buffer);
+                        // 显示音量值
+                        mystatus.innerHTML =Math.round(maxVal * 100);
+                    };
+                }).catch((error) => {
+                    mystatus.innerHTML = '获取音频时好像出了点问题。' + error
+                });
+            } else {
+                mystatus.innerHTML = '不支持获取媒体接口'
+            }*/
+        })
+
+    </script>
+
+</head>
+
+<body>
+<!-- bg effect -->
+<div id="bg">
+    <canvas></canvas>
+    <canvas></canvas>
+    <canvas></canvas>
+</div>
+<!-- //bg effect -->
+<!-- title -->
+<h1>登录
+    <a href="#" onclick='' id="qqLoginBtn">
+        <img th:src="@{/static/images/qq_login.png}">
+    </a>
+    <a href="javascript:;" style="font-size: 14px;float: right;" id="userInfo" th:text="${session?.user?.userName}"></a>
+</h1>
+
+<!-- //title -->
+<!-- content -->
+<div class="sub-main-w3">
+    <form id="form" method="post" onsubmit="return false;">
+        <h2>登录信息
+            <span id="mystatus"></span>
+            <i class="fas fa-level-down-alt"></i>
+        </h2>
+        <div class="form-style-agile">
+            <label>
+                <i class="fas fa-user"></i>
+                登录名
+            </label>
+            <input placeholder="请输入登录名" name="userName" id="userName" type="text" required="">
+        </div>
+        <div class="form-style-agile">
+            <label>
+                <i class="fas fa-unlock-alt"></i>
+                密码
+            </label>
+            <input placeholder="请输入密码" name="password" id="password" type="password" required="">
+        </div>
+        <!-- checkbox -->
+        <div class="wthree-text">
+            <ul>
+                <li>
+                    <!--<label class="anim">
+                        <input type="checkbox" class="checkbox" id="keepLogin">
+                        <span>保持登录</span>
+                    </label>-->
+                    <a href="javascript:;" id="register">注册</a>
+                    <a th:href="@{/index}" id="index">首页</a>
+                </li>
+                <li>
+                    <a href="javascript:;" id="chat">去聊天</a>
+                </li>
+            </ul>
+        </div>
+        <!-- //checkbox -->
+        <input type="submit" id="login" value="登录">
+    </form>
+</div>
+<!-- //content -->
+
+<!-- copyright -->
+<div class="footer">
+    <p>Copyright &copy; 2020 黄猿帅.页面模板来自【<a target="_blank" href="http://sc.chinaz.com/moban/">chinaz.com</a>】</p>
+</div>
+<!-- //copyright -->
+</body>
+
+</html>

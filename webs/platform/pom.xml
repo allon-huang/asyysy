@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.8.RELEASE</version>
+        <!--<relativePath>../pom.xml</relativePath>-->
+    </parent>
+    <packaging>war</packaging>
+    <groupId>cn.asyysy</groupId>
+    <artifactId>platform</artifactId>
+    <!--<version>0.0.1-SNAPSHOT</version>-->
+    <name>platform</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.asyysy.asyysy</groupId>
+            <artifactId>asyysy-app</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>cn.asyysy.asyysy</groupId>
+            <artifactId>asyysy-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--sonar-->
+        <!-- https://mvnrepository.com/artifact/org.codehaus.sonar/sonar-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>5.1</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>-->
+    </dependencies>
+
+    <build>
+
+        <!-- 资源目录 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--原文链接：https://blog.csdn.net/u010515155/article/details/78458232-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!--打包后项目名-->
+        <finalName>asyysy_core</finalName>
+    </build>
+</project>

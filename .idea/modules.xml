@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/apps/apps.iml" filepath="$PROJECT_DIR$/apps/apps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asyysy.iml" filepath="$PROJECT_DIR$/asyysy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/asyysy-api/asyysy-api.iml" filepath="$PROJECT_DIR$/apps/asyysy-api/asyysy-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/asyysy-app/asyysy-app.iml" filepath="$PROJECT_DIR$/apps/asyysy-app/asyysy-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/asyysy-common/asyysy-common.iml" filepath="$PROJECT_DIR$/apps/asyysy-common/asyysy-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webs/platform/platform.iml" filepath="$PROJECT_DIR$/webs/platform/platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webs/webs.iml" filepath="$PROJECT_DIR$/webs/webs.iml" />
+    </modules>
+  </component>
+</project>
