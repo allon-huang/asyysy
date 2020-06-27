@@ -295,7 +295,6 @@ public class ApiUserController {
      * @param request
      * @return
      */
-    @LoginSystem
     @RequestMapping("getUser")
     public ApiResponse getUser(HttpServletRequest request){
         try{

@@ -1,7 +1,7 @@
 domain:
   # domain http://localhost:8080//asyysy_core
   # https://www.asyysy.cn/asyysy_core
-  domain: //asyysy.utools.club///asyysy_core
+  domain: //huangyy.utools.club/
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -21,7 +21,7 @@ domain:
 server:
   port: 8080
   servlet:
-    context-path: /asyysy_core
+    context-path: /
 spring:
   datasource:
     platform: mysql

@@ -103,7 +103,7 @@
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
                 var socketUrl= "[[${sys.domain}]]/imserver/" + $("#pkid").val();
                 console.log(socketUrl);
-                socketUrl=socketUrl.replace("https","ws").replace("http","ws");
+                socketUrl=socketUrl.replace("https","ws").replace("http","ws").replace("//","ws//");
                 console.log(socketUrl);
                 if(socket!=null){
                     socket.close();

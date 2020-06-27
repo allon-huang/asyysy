@@ -122,14 +122,13 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
                         }
                         return true;
                     }
-                    response.sendRedirect( "login");
+                    //response.sendRedirect( "login");
                     return false;
                 }
                 logger.info("用户:{}-一登陆登录", user.getUserName());
                 return true;
             }
         }
-
         return true;
     }
 

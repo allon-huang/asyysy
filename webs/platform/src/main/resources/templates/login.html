@@ -9,13 +9,7 @@
     <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
     <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
     <script th:src="@{static/js/canva_moving_effect.js}"></script>
-    <!--QQ互联登录-->
-    <script type="text/javascript"  charset="utf-8"
-            src="//connect.qq.com/qc_jssdk.js"
-            th:data-appid="${sys.qqAppId}"
-            th:data-redirecturi="${sys.qqRedirectUri}"
-    data-callback="true"
-    ></script>
+  <!--  -->
 
     <style>
         #userInfo{
@@ -83,15 +77,16 @@
                 logoutHtml();
             })
             // 验证qq登录
-            if (QC.Login.check()) {
+            if (qqLoginFlag && QC.Login.check()) {
                 QC.Login.getMe(function (openId, accessToken) {
                     var data = {
                         openId: openId,
                         accessToken: accessToken
                     };
-                   common.ajaxPostJsonAuthorization(domain + "/api/qq/saveQqInfo", JSON.stringify(data),function (data) {
+                   /*common.ajaxPostJsonAuthorization(domain + "/api/qq/saveQqInfo", JSON.stringify(data),function (data) {
                    },function (data) {
-                   })
+                   })*/
+                    //
                 })
             }
         }
@@ -162,22 +157,31 @@
                 });
             })
         }
-
+        
+        // 页面初始化
         $(function () {
-            QC.Login({
+            if (qqLoginFlag) {
+                <!--QQ互联登录-->
+                $("body").append('<script type="text/javascript"  charset="utf-8"\n' +
+                    '            src="//connect.qq.com/qc_jssdk.js"\n' +
+                    '            th:data-appid="${sys.qqAppId}"\n' +
+                    '            th:data-redirecturi="${sys.qqRedirectUri}"\n' +
+                    '    data-callback="true"\n' +
+                    '    >lt;/script>');
+                QC.Login({
                     //btnId：插入按钮的节点id，必选  
                     btnId:"qqLoginBtn",
                     //用户需要确认的scope授权项，可选，默认all  
                     scope:"all",
                     //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S  
                     //size: "A_XL"
-            }, function(reqData, opts){
-                checkLogin();
-                console.log(reqData, opts)
-            }, function(opts){
-                console.log(opts)
-            });
-
+                }, function(reqData, opts){
+                    checkLogin();
+                    console.log(reqData, opts)
+                }, function(opts){
+                    console.log(opts)
+                });
+            }
 
             $("#login").hide();
             $("#register").hide();
