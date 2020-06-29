@@ -143,4 +143,29 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
 
     }
+
+    /**
+     * 拦截器redirect方法
+     */
+    private void intercetorRedirect(Method method, HttpServletRequest request, HttpServletResponse response){
+        // 检查是否有ResponseBody注释，有则跳过验证
+        boolean annotationPresent = method.isAnnotationPresent(ResponseBody.class);
+        if (annotationPresent) {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            PrintWriter out = null;
+            try {
+                out = response.getWriter();
+                out.append(JSON.toJSONString(ApiResponse.ERROR("请登录")));
+            } catch (IOException e) {
+                logger.error("拦截器ResponseBody 响应io异常：{}", e.getMessage(), e);
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+            }
+            return;
+        }
+
+    }
 }
