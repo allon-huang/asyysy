@@ -1,18 +1,22 @@
 package cn.asyysy.common;
 
-//import lombok.Getter;
-//import lombok.ToString;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * 页面枚举
  */
-//@ToString
-//@Getter
+@ToString
+@Getter
 public enum PageEnum {
     /**
      * 首页
      */
-    INDEX("index", "/index", "首页");
+    INDEX("index", "/index", "首页"),
+    /**
+     * 首页
+     */
+    LOGIN("login", "/login", "首页");
     
 
     /**

@@ -2,7 +2,7 @@ package cn.asyysy.app.controller.ShortUrl;
 
 import cn.asyysy.app.controller.common.BaseController;
 import cn.asyysy.app.exception.BaseException;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.ShortUrl.ShortUrl;
 import cn.asyysy.app.service.short_url.ShortUrlService;
 import com.alibaba.fastjson.JSONArray;
@@ -36,13 +36,13 @@ public class ShortUrlController extends BaseController {
         try {
             // 保存短网址
             ShortUrl data = shortUrlService.save(longUrl);
-            return ApiResponse.SUCCESS("success",data);
+            return BaseResponse.SUCCESS("success",data);
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage() );
+            return BaseResponse.ERROR(e.getMessage() );
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            return BaseResponse.ERROR("保存短网址异常", e);
         }
     }
 
@@ -59,13 +59,13 @@ public class ShortUrlController extends BaseController {
             response.sendRedirect(d.getLongUrl());
             // 更新转发次数
             shortUrlService.updateRedirctTime(d);
-            return ApiResponse.SUCCESS("success", JSONArray.toJSONString(d));
+            return BaseResponse.SUCCESS("success", JSONArray.toJSONString(d));
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage() );
+            return BaseResponse.ERROR(e.getMessage() );
         } catch (Exception e){
             logger.error("短网址跳转异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("短网址异常", e);
+            return BaseResponse.ERROR("短网址异常", e);
         }
     }
 }

@@ -2,6 +2,8 @@ domain:
   # domain http://localhost:8080//asyysy_core
   # https://www.asyysy.cn/asyysy_core
   domain: //huangyy.utools.club/
+  # 未登录方法
+  no_login_url: login
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:

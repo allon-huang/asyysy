@@ -15,6 +15,12 @@ public class SystemInfo {
     private String domain;
 
     /**
+     * 未登录方法
+     */
+    @Value("${domain.no_login_url}")
+    private String noLoginUrl;
+
+    /**
      * 短网址domain
      */
     @Value("${domain.short-url.domain}")

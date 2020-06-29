@@ -3,7 +3,7 @@ package cn.asyysy.platform.controller;
 import cn.asyysy.app.annotation.LoginSystem;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.controller.common.BaseController;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.model.wechat.WxReplyModel;
 import cn.asyysy.app.service.redis.RedisBaseService;
@@ -94,7 +94,7 @@ public class IndexController extends BaseController {
             ew.and().like("user_name", vo.getUserName());
         }
         List<User> list = userService.selectList(ew);
-        return ApiResponse.SUCCESS("获取用户列表成功", list);
+        return BaseResponse.SUCCESS("获取用户列表成功", list);
     }
 
 

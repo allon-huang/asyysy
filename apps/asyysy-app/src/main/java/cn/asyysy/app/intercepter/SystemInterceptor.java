@@ -2,8 +2,10 @@ package cn.asyysy.app.intercepter;
 
 
 import cn.asyysy.app.annotation.LoginSystem;
+import cn.asyysy.app.exception.BaseException;
 import cn.asyysy.app.model.SystemInfo;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.PageEnum;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.service.user.UserService;
 import cn.asyysy.app.util.IpUtils;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -52,13 +55,14 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
         this.env = env;
         this.userService = userService;
     }
+    
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-        /*//设置允许哪些域名应用进行ajax访问
+        //设置允许哪些域名应用进行ajax访问
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
         response.setHeader("Access-Control-Allow-Headers", " Origin, X-Requested-With, content-Type, Accept, Authorization");
-        response.setHeader("Access-Control-Max-Age","3600");*/
+        response.setHeader("Access-Control-Max-Age","3600");
 
         request.setAttribute("sys", systemInfo);
         if (request.getRequestURI().contains("/static")) {
@@ -96,37 +100,30 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
         }
         HandlerMethod handlerMethod=(HandlerMethod) object;
         Method method=handlerMethod.getMethod();
-        //检查是否有passToken注释，有则跳过验证
+        // LoginSystem，有则验证是否登录
         if(method.isAnnotationPresent(LoginSystem.class)){
             // 登录自己
-            LoginSystem loginSystem =method.getAnnotation(LoginSystem.class);
-            logger.error("asdasd:{}", loginSystem.isLogo());
+            LoginSystem loginSystem = method.getAnnotation(LoginSystem.class);
+            // 判断是否登录
             if(loginSystem.isLogo()){
-                // 校验是否登录
-                User user = userService.checkLogin(request);
-                if (user == null) {
-                    // 检查是否有ResponseBody注释，有则跳过验证
-                    if(method.isAnnotationPresent(ResponseBody.class)){
-                        response.setCharacterEncoding("UTF-8");
-                        response.setContentType("application/json; charset=utf-8");
-                        PrintWriter out = null;
-                        try {
-                            out = response.getWriter();
-                            out.append(JSON.toJSONString(ApiResponse.ERROR("请登录")));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (out != null) {
-                                out.close();
-                            }
-                        }
-                        return true;
+                try {
+                    // 校验是否登录
+                    User user = userService.checkLogin(request);
+                    if (null == user) {
+                        throw new BaseException("未登录");
                     }
-                    //response.sendRedirect( "login");
-                    return false;
+                    logger.info("用户:{}-一登陆登录", user.getUserName());
+                } catch (Exception e) {
+                    // 是否json响应
+                    if(checkRestControllerOrResponseBody(handlerMethod)) {
+                        this.redirectJson(response, BaseResponse.ERROR("请登录"));
+                    } else {
+                        // 未登录重定向页面
+                        response.sendRedirect(systemInfo.getDomain() + systemInfo.getNoLoginUrl());
+                        // 拦截器重定向后要return false
+                        return false;
+                    }
                 }
-                logger.info("用户:{}-一登陆登录", user.getUserName());
-                return true;
             }
         }
         return true;
@@ -145,27 +142,40 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * 拦截器redirect方法
+     * 响应json
      */
-    private void intercetorRedirect(Method method, HttpServletRequest request, HttpServletResponse response){
-        // 检查是否有ResponseBody注释，有则跳过验证
-        boolean annotationPresent = method.isAnnotationPresent(ResponseBody.class);
-        if (annotationPresent) {
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json; charset=utf-8");
-            PrintWriter out = null;
-            try {
-                out = response.getWriter();
-                out.append(JSON.toJSONString(ApiResponse.ERROR("请登录")));
-            } catch (IOException e) {
-                logger.error("拦截器ResponseBody 响应io异常：{}", e.getMessage(), e);
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
+    private void redirectJson(HttpServletResponse response, BaseResponse data){
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.append(JSON.toJSONString(data));
+        } catch (IOException e) {
+            logger.error("拦截器ResponseBody 响应io异常：{}", e.getMessage(), e);
+        } finally {
+            if (out != null) {
+                out.close();
             }
-            return;
         }
+    }
 
+    /**
+     * 校验是否RestContrller（类注解）或ResponseBody（方法）
+     * @param handlerMethod
+     * @return
+     */
+    private boolean checkRestControllerOrResponseBody(HandlerMethod handlerMethod) {
+        if (null == handlerMethod) {
+            return false;
+        }
+        RestController restController = handlerMethod.getBeanType().getAnnotation(RestController.class);
+        Method method=handlerMethod.getMethod();
+        // 方法注解
+        boolean annotationResponseBody = method.isAnnotationPresent(ResponseBody.class);
+        if (null != restController || annotationResponseBody) {
+            return true;
+        }
+        return false;
     }
 }

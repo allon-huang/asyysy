@@ -4,7 +4,7 @@ package cn.asyysy.platform.controller.common;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.controller.common.BaseController;
 import cn.asyysy.app.exception.BaseException;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.wechat.WxConfig;
 import cn.asyysy.app.service.redis.RedisBaseService;
 import cn.asyysy.app.util.HttpClientUtil;
@@ -40,13 +40,13 @@ public class CommonController extends BaseController {
     @RequestMapping("sysInfo")
     public Object getSysInfo(){
         try {
-            return ApiResponse.SUCCESS("获取系统信息成功", systemInfo());
+            return BaseResponse.SUCCESS("获取系统信息成功", systemInfo());
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            return BaseResponse.ERROR("保存短网址异常", e);
         }
     }
 
@@ -59,13 +59,13 @@ public class CommonController extends BaseController {
     public Object getWxConfig(){
         try {
             Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
-            return ApiResponse.SUCCESS("获取微信token信息", (null == wxConfig) ? null: JSON.parseObject(wxConfig.toString(), WxConfig.class));
+            return BaseResponse.SUCCESS("获取微信token信息", (null == wxConfig) ? null: JSON.parseObject(wxConfig.toString(), WxConfig.class));
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            return BaseResponse.ERROR("保存短网址异常", e);
         }
     }
 
@@ -79,13 +79,13 @@ public class CommonController extends BaseController {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
-            return ApiResponse.SUCCESS("获取新型肺炎信息", commonService.ncpApi());
+            return BaseResponse.SUCCESS("获取新型肺炎信息", commonService.ncpApi());
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            return BaseResponse.ERROR("保存短网址异常", e);
         }
     }
 
@@ -95,7 +95,7 @@ public class CommonController extends BaseController {
      */
 
     @RequestMapping("getCommonName")
-    public ApiResponse getCommonName(@RequestBody Map<String, String> params){
+    public BaseResponse getCommonName(@RequestBody Map<String, String> params){
         try {
             String name = params.get("name");
             if (StringUtils.isEmpty(name)) {
@@ -105,13 +105,13 @@ public class CommonController extends BaseController {
             map.put("name", name);
             // 辽宁公安重名查询
             String result = HttpClientUtil.doGet("https://m.zwfw.gat.ln.gov.cn//api/query/countName", map);
-            return ApiResponse.SUCCESS("获取重名查询数据", result);
+            return BaseResponse.SUCCESS("获取重名查询数据", result);
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         } catch (Exception e){
             logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            return BaseResponse.ERROR("保存短网址异常", e);
         }
     }
 

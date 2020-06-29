@@ -1,11 +1,11 @@
-package cn.asyysy.app.model.common;
+package cn.asyysy.common.rest.common;
 import java.io.Serializable;
 
 /**
  * api返回结果响应实体类
  * @author hyy
  */
-public class ApiResponse implements Serializable {
+public class BaseResponse implements Serializable {
 
     /**
      * 序列化
@@ -47,7 +47,7 @@ public class ApiResponse implements Serializable {
     /**
      * 私有化构造方法
      */
-    private ApiResponse() {
+    private BaseResponse() {
     }
 
     /**
@@ -66,8 +66,8 @@ public class ApiResponse implements Serializable {
      * @param data
      * @return
      */
-    public static ApiResponse SUCCESS(String msg, Object data) {
-        ApiResponse response = new ApiResponse();
+    public static BaseResponse SUCCESS(String msg, Object data) {
+        BaseResponse response = new BaseResponse();
         response.setType(SUCCESS_TYPE);
         response.setMsg(msg);
         response.setData(data);
@@ -81,7 +81,7 @@ public class ApiResponse implements Serializable {
      * @param msg
      * @return
      */
-    public static ApiResponse SUCCESS(String msg) {
+    public static BaseResponse SUCCESS(String msg) {
         return SUCCESS(msg, NO_DATA);
     }
 
@@ -93,7 +93,7 @@ public class ApiResponse implements Serializable {
      * @param clazz
      * @return
      */
-    public static ApiResponse SUCCESS(Object data, Class<?> clazz) {
+    public static BaseResponse SUCCESS(Object data, Class<?> clazz) {
         return SUCCESS(SUCCESS_MSG, data);
     }
 
@@ -105,8 +105,8 @@ public class ApiResponse implements Serializable {
      * @param data
      * @return
      */
-    public static ApiResponse ERROR(String msg, Object data) {
-        ApiResponse response = new ApiResponse();
+    public static BaseResponse ERROR(String msg, Object data) {
+        BaseResponse response = new BaseResponse();
         response.setType(FAIL_TYPE);
         response.setMsg(msg);
         response.setData(data);
@@ -120,7 +120,7 @@ public class ApiResponse implements Serializable {
      * @param msg
      * @return
      */
-    public static ApiResponse ERROR(String msg) {
+    public static BaseResponse ERROR(String msg) {
         return ERROR(msg, NO_DATA);
     }
 
@@ -132,7 +132,7 @@ public class ApiResponse implements Serializable {
      * @param clazz
      * @return
      */
-    public static ApiResponse ERROR(Object data, Class<?> clazz) {
+    public static BaseResponse ERROR(Object data, Class<?> clazz) {
         return ERROR(FAIL_MSG, data);
     }
 

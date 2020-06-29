@@ -2,7 +2,7 @@ package cn.asyysy.app.controller;
 
 import cn.asyysy.app.controller.common.BaseController;
 import cn.asyysy.app.exception.BaseException;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.service.user.UserService;
 import cn.asyysy.app.util.HttpClientUtil;
@@ -60,7 +60,7 @@ public class QqLoginApiController extends BaseController {
 
     @RequestMapping("saveQqInfo")
     @ResponseBody
-    public ApiResponse saveQqInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, String> params) {
+    public BaseResponse saveQqInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, String> params) {
         try {
             String openId = params.get("openId");
             String accessToken = params.get("accessToken");
@@ -130,13 +130,13 @@ public class QqLoginApiController extends BaseController {
                 user.setQqUnionId(unionid);
                 userService.update(user, ew);
             }
-            return ApiResponse.SUCCESS("success");
+            return BaseResponse.SUCCESS("success");
         } catch (BaseException e) {
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage());
+            return BaseResponse.ERROR(e.getMessage());
         }
     }
 

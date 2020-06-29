@@ -1,12 +1,11 @@
 package cn.asyysy.platform.controller.api.user;
 
 import cn.asyysy.app.annotation.LoginSystem;
-import cn.asyysy.app.annotation.UserToken;
 import cn.asyysy.app.common.token.TokenUtil;
 import cn.asyysy.app.consts.BaseConsts;
 import cn.asyysy.app.exception.BaseException;
 import cn.asyysy.app.listener.SessionListener;
-import cn.asyysy.app.model.common.ApiResponse;
+import cn.asyysy.common.rest.common.BaseResponse;
 import cn.asyysy.app.model.core.User;
 import cn.asyysy.app.service.user.UserService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -65,24 +64,25 @@ public class ApiUserController {
     UserService userService;
 
     @LoginSystem
+    @ResponseBody
     @PostMapping("save")
-    public ApiResponse save(@RequestBody User user){
+    public BaseResponse save(@RequestBody User user){
         logger.info("user/save");
         if (null == user) {
-            return ApiResponse.ERROR("用户为空");
+            return BaseResponse.ERROR("用户为空");
         }
         if(StringUtils.isEmpty(user.getUserName())){
-            return ApiResponse.ERROR("用户名不可为空");
+            return BaseResponse.ERROR("用户名不可为空");
         }
         if(StringUtils.isEmpty(user.getPassword())){
-            return ApiResponse.ERROR("用户名密码不可为空");
+            return BaseResponse.ERROR("用户名密码不可为空");
         }
         EntityWrapper<User> entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new User());
         entityWrapper.where("user_name={0}",user.getUserName());
         int sum = userService.selectCount(entityWrapper);
         if(sum != 0){
-            return ApiResponse.ERROR("用户名已注册");
+            return BaseResponse.ERROR("用户名已注册");
         }
         // 最后操作时间
         user.setUpdateDate(new Date());
@@ -90,21 +90,21 @@ public class ApiUserController {
         user.setCreateDate(new Date());
         boolean result = userService.insert(user);
         logger.info("用户注册成功" + result);
-        return ApiResponse.SUCCESS("用户新增成功",result);
+        return BaseResponse.SUCCESS("用户新增成功",result);
     }
 
     @LoginSystem
     @PutMapping("update")
-    public ApiResponse update(@RequestBody User user){
+    public BaseResponse update(@RequestBody User user){
         logger.info("user/update");
         if (null == user) {
-            return ApiResponse.ERROR("用户为空");
+            return BaseResponse.ERROR("用户为空");
         }
         if(StringUtils.isEmpty(user.getUserName())){
-            return ApiResponse.ERROR("用户名不可为空");
+            return BaseResponse.ERROR("用户名不可为空");
         }
         if(StringUtils.isEmpty(user.getPassword())){
-            return ApiResponse.ERROR("用户名密码不可为空");
+            return BaseResponse.ERROR("用户名密码不可为空");
         }
         // 最后操作时间
         user.setUpdateDate(new Date());
@@ -114,37 +114,37 @@ public class ApiUserController {
         updateWrapper.where("pkid={0}",user.getPkid());
         boolean result = userService.update(user, updateWrapper);
         logger.info("用户修改" + result);
-        return ApiResponse.SUCCESS("用户修改",result);
+        return BaseResponse.SUCCESS("用户修改",result);
     }
 
     @LoginSystem
     @DeleteMapping("delUser")
-    public ApiResponse delUser(@RequestParam Long pkid){
+    public BaseResponse delUser(@RequestParam Long pkid){
         boolean result = userService.deleteById(pkid);
-        return ApiResponse.SUCCESS("删除用户",result);
+        return BaseResponse.SUCCESS("删除用户",result);
     }
 
     @LoginSystem
     @GetMapping("list")
-    public ApiResponse list(){
+    public BaseResponse list(){
         EntityWrapper<User> entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new User());
         List<User> list = userService.selectList(entityWrapper);
-        return ApiResponse.SUCCESS("用户列表",list);
+        return BaseResponse.SUCCESS("用户列表",list);
     }
 
     @LoginSystem
     @GetMapping("listPage")
-    public ApiResponse listPage(@RequestBody User user){
+    public BaseResponse listPage(@RequestBody User user){
         EntityWrapper<User> entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new User());
         Page<User> page = new Page();
         Page<User> pageResult = userService.selectPage(user, page);
-        return ApiResponse.SUCCESS("用户列表",pageResult);
+        return BaseResponse.SUCCESS("用户列表",pageResult);
     }
 
     @PostMapping("register")
-    public ApiResponse register(@RequestBody User user){
+    public BaseResponse register(@RequestBody User user){
         logger.info("user/register");
         try {
             if(StringUtils.isEmpty(user.getUserName())){
@@ -169,20 +169,20 @@ public class ApiUserController {
                 throw new BaseException("用户名注册保存失败:" + sum);
             }
             logger.info("用户注册成功" + result);
-            return ApiResponse.SUCCESS("用户注册成功", user);
+            return BaseResponse.SUCCESS("用户注册成功", user);
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage(), e);
+            return BaseResponse.ERROR(e.getMessage(), e);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR("【注册】系统错误请稍后重试");
+            return BaseResponse.ERROR("【注册】系统错误请稍后重试");
         }
     }
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @ApiImplicitParam(name = "userIn", value = "用户实体", paramType = "path", required = true, dataType = "Integer")
     @PostMapping("login")
-    public ApiResponse login(HttpServletRequest request, HttpServletResponse response, @RequestBody User userIn){
+    public BaseResponse login(HttpServletRequest request, HttpServletResponse response, @RequestBody User userIn){
         try {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
@@ -226,19 +226,19 @@ public class ApiUserController {
             response.addCookie(cookie);
             AtomicInteger userCount = SessionListener.userCount;
             userCount.set(userCount.getAndIncrement()+1);
-            return ApiResponse.SUCCESS("登录成功", token);
+            return BaseResponse.SUCCESS("登录成功", token);
         } catch (BaseException e){
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR(e.getMessage(), e);
+            return BaseResponse.ERROR(e.getMessage(), e);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return ApiResponse.ERROR("【登录】系统错误请稍后重试");
+            return BaseResponse.ERROR("【登录】系统错误请稍后重试");
         }
     }
 
-    @UserToken
+    @LoginSystem
     @RequestMapping("logout")
-    public ApiResponse  logout(HttpServletRequest request){
+    public BaseResponse logout(HttpServletRequest request){
 
         // 已登录获取user
         //User user = (User)session.getAttribute(Constants.COMMON.SESSION_API_USER_KEY);
@@ -257,7 +257,7 @@ public class ApiUserController {
             logger.info("user/logout-sessisID:" + session.getId());
             Object userObj = session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
             if (null == userObj) {
-                return ApiResponse.ERROR("请登录");
+                return BaseResponse.ERROR("请登录");
             }
             // 退出登录
             session.removeAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
@@ -280,13 +280,13 @@ public class ApiUserController {
             }
             //获取token中的用户信息
             claims = TokenUtil.parseJWT(token);*/
-            return ApiResponse.SUCCESS("退出登录成功");
+            return BaseResponse.SUCCESS("退出登录成功");
         }catch (BaseException e){
-            return ApiResponse.ERROR( BaseConsts.MSG.PLEASE_LOGIN,"业务异常:" +  e.getMessage());
+            return BaseResponse.ERROR( BaseConsts.MSG.PLEASE_LOGIN,"业务异常:" +  e.getMessage());
         }catch (ExpiredJwtException e){
-            return ApiResponse.ERROR(BaseConsts.MSG.PLEASE_LOGIN,"401,token失效:" +  e.getMessage());
+            return BaseResponse.ERROR(BaseConsts.MSG.PLEASE_LOGIN,"401,token失效:" +  e.getMessage());
         }catch (Exception e){
-            return ApiResponse.ERROR(BaseConsts.MSG.PLEASE_LOGIN,"系统异常:" +  e.getMessage());
+            return BaseResponse.ERROR(BaseConsts.MSG.PLEASE_LOGIN,"系统异常:" +  e.getMessage());
         }
     }
 
@@ -296,17 +296,17 @@ public class ApiUserController {
      * @return
      */
     @RequestMapping("getUser")
-    public ApiResponse getUser(HttpServletRequest request){
+    public BaseResponse getUser(HttpServletRequest request){
         try{
             // 校验是否登录
             User user = userService.checkLoginThrowException(request);
-            return ApiResponse.SUCCESS(BaseConsts.MSG.ON_LINE, user.getUserName());
+            return BaseResponse.SUCCESS(BaseConsts.MSG.ON_LINE, user.getUserName());
         }catch (BaseException e){
-            return ApiResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"业务异常:" +  e.getMessage());
+            return BaseResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"业务异常:" +  e.getMessage());
         }catch (ExpiredJwtException e){
-            return ApiResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"401,token失效:" +  e.getMessage());
+            return BaseResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"401,token失效:" +  e.getMessage());
         }catch (Exception e){
-            return ApiResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"系统异常:" +  e.getMessage());
+            return BaseResponse.ERROR(BaseConsts.MSG.UN_ON_LINE,"系统异常:" +  e.getMessage());
         }
     }
 
@@ -316,10 +316,10 @@ public class ApiUserController {
      * @return
      **/
     @PostMapping("getOnLineCount")
-    public ApiResponse getOnLineCount(HttpServletRequest request){
+    public BaseResponse getOnLineCount(HttpServletRequest request){
         // 在线人数
         AtomicInteger userCount = SessionListener.userCount;
-        return ApiResponse.SUCCESS(BaseConsts.MSG.ON_LINE_SUM, userCount);
+        return BaseResponse.SUCCESS(BaseConsts.MSG.ON_LINE_SUM, userCount);
     }
 }
 
