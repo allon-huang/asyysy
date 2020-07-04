@@ -14,9 +14,8 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler {
 //        1. 收到消息，从消息中取出下层交付上来的内容
         System.out.println("收到消息"+ message.getPayload());
 
-//        2. 延时
-        Thread.sleep(2000);
 
+        
 //        3. 发送文本消息给客户端
         System.out.println("发送消息: Hello world!");
         session.sendMessage(new TextMessage("hello world"));
@@ -27,6 +26,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 //        super.afterConnectionEstablished(session);
         System.out.println("建立连接");
+        session.sendMessage(new TextMessage("欢迎"));
     }
 
     //    ；连接关闭时的处理器

@@ -64,7 +64,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // addPathPatterns 需要拦截的路径/** 为全部    excludePathPatterns 拦截路径下排除的路径
-        registry.addInterceptor(new SystemInterceptor(systemInfo, env, loginService)).addPathPatterns("/**").excludePathPatterns("/documentation**");
+        registry.addInterceptor(new SystemInterceptor(systemInfo, env, loginService))
+                .addPathPatterns("/**")
+                .excludePathPatterns("/documentation**");
         registry.addInterceptor(new ShortUrlInterceptor()).addPathPatterns("/**");
         // 注册Token拦截器
         //registry.addInterceptor(new ApiSignatureInterceptor());
