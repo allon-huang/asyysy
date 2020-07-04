@@ -1,9 +1,9 @@
 domain:
   # domain http://localhost:8080//asyysy_core
   # https://www.asyysy.cn/asyysy_core
-  domain: //huangyy.utools.club/
+  domain: http://yysy.wicp.net
   # 未登录方法
-  no_login_url: login
+  no_login_url: /login
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -21,7 +21,7 @@ domain:
     app_key: 0c157ca044b8f179fb167f3eb362faf3
     redirect_uri: http://yysy.wicp.net/asyysy_core/api/qq/callback
 server:
-  port: 8080
+  port: 80
   servlet:
     context-path: /
 spring:

@@ -15,7 +15,6 @@
     <modules>
         <module>asyysy-common</module>
         <module>asyysy-app</module>
-        <module>asyysy-api</module>
     </modules>
 
     <build>
