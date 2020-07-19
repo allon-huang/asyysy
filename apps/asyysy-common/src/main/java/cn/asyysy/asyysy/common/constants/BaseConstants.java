@@ -2,6 +2,7 @@ package cn.asyysy.asyysy.common.constants;
 
 /**
  * 公共常量类
+ * @author hyy
  */
 public class BaseConstants {
 
