@@ -26,7 +26,7 @@ public class MyWebSocketHandler implements WebSocketHandler{
     private static final Map<String, WebSocketSession> users;
 
     static {
-        users = new HashMap<>();
+        users = new HashMap<String, WebSocketSession>();
     }
 
     /**

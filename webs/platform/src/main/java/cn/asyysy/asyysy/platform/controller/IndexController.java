@@ -2,6 +2,7 @@ package cn.asyysy.asyysy.platform.controller;
 
 import cn.asyysy.asyysy.app.annotation.LoginSystem;
 import cn.asyysy.asyysy.app.dto.UserLoginDTO;
+import cn.asyysy.asyysy.app.model.ShortUrl.ShortUrl;
 import cn.asyysy.asyysy.common.constants.BaseConstants;
 import cn.asyysy.asyysy.app.controller.common.BaseController;
 import cn.asyysy.asyysy.common.rest.common.BaseResponse;
@@ -53,7 +54,7 @@ public class IndexController extends BaseController {
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
         request.setAttribute("list",wxReplys);
         // 短网址
-        request.setAttribute("shortUrlList", shortUrlService.selectList(new EntityWrapper<>()
+        request.setAttribute("shortUrlList", shortUrlService.selectList(new EntityWrapper<ShortUrl>()
         //.eq("gender",1)
         //.like("name", "霸")
         //.or()//SELECT id AS id,`name`,email,gender,age FROM employee WHERE (gender = ? AND name LIKE ? OR email LIKE ?)
