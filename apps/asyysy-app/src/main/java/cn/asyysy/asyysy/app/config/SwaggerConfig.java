@@ -33,7 +33,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("黄猿帅_Swagger")
-                .termsOfServiceUrl("http://www.asyysy.cn/asyysy_core/h5")
+                .termsOfServiceUrl("http://www.asyysy.cn/asyysy/h5")
                 .version("0.0.1")
                 .build();
     }

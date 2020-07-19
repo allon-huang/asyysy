@@ -1,6 +1,6 @@
 domain:
-  # domain http://localhost:8080//asyysy_core
-  # https://www.asyysy.cn/asyysy_core
+  # domain http://localhost:8080//asyysy
+  # https://www.asyysy.cn/asyysy
   domain: http://yysy.wicp.net
   # 未登录方法
   no_login_url: /login
@@ -19,7 +19,7 @@ domain:
   qq:
     app_id: 101852685
     app_key: 0c157ca044b8f179fb167f3eb362faf3
-    redirect_uri: http://yysy.wicp.net/asyysy_core/api/qq/callback
+    redirect_uri: http://yysy.wicp.net/asyysy/api/qq/callback
 server:
   port: 80
   servlet:
