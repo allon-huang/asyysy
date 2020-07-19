@@ -101,9 +101,12 @@
             }else{
                 console.log("您的浏览器支持WebSocket");
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-                var socketUrl= "[[${sys.domain}]]/imserver/" + $("#pkid").val();
+                var socketUrl= "[[${sys.domain}]]/socket/imserver/" + $("#pkid").val();
                 console.log(socketUrl);
-                socketUrl=socketUrl.replace("https","ws").replace("http","ws").replace("//","ws//");
+                socketUrl = socketUrl.replace("https://","ws://").replace("http://","ws://");
+                if (socketUrl.indexOf("ws")) {
+                    socketUrl = "ws" + socketUrl;
+                }
                 console.log(socketUrl);
                 if(socket!=null){
                     socket.close();
@@ -120,7 +123,7 @@
                     console.log(msg.data);
                     $.alert({
                         title: '提示信息',
-                        content: "用户" + msg.data,
+                        content: msg.data,
                         confirm: function(){
                         }
                     });

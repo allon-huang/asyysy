@@ -1,5 +1,5 @@
 domain:
-  domain: https://www.asyysy.cn//asyysy_core
+  domain: https://www.asyysy.cn//asyysy
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -15,11 +15,11 @@ domain:
   qq:
     app_id: 101852685
     app_key: 0c157ca044b8f179fb167f3eb362faf3
-    redirect_uri: http://www.asyysy.cn/asyysy_core/api/qq/callback
+    redirect_uri: http://www.asyysy.cn/asyysy/api/qq/callback
 server:
   port: 8080
   servlet:
-    context-path: /asyysy_core
+    context-path: /asyysy
 spring:
   datasource:
     platform: mysql

@@ -1022,7 +1022,8 @@ common.ajaxPostJson = function(url, data, success, error){
 
 common.ajaxPostJsonAuthorization = function(url, data, success, error){
     common.ajaxPostJsonBeforeSend(url, data, success, error,function(xhr) {
-        xhr.setRequestHeader("Authorization", $.cookie("token"));
+        var authorization = $.cookie("Authorization");
+        xhr.setRequestHeader("Authorization", authorization);
     })
 }
 

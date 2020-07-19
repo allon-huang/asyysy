@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="keywords" content="" />
+    <script th:src="@{/static/js/md5.js }"></script>
     <link rel="stylesheet" th:href="@{/static/css/login/style.css}" type="text/css" media="all" />
     <link rel="stylesheet" th:href="@{/static/css/login/fontawesome-all.css}">
     <script th:src="@{static/js/canva_moving_effect.js}"></script>
@@ -39,7 +40,7 @@
         function logout() {
             common.ajaxPostJsonAuthorization(domain + "/api/user/logout",null,function (data) {
                 // 退出登录
-                $.cookie("token",null);
+                $.cookie("Authorization",null);
                 $.confirm({
                     title: "信息",
                     animation: 'RotateYR',
@@ -138,7 +139,7 @@
             }
             common.ajaxPostJsonAuthorization(domain + "/api/user/login",JSON.stringify(data),function (data) {
                 // 创建一个cookie并设置有效时间为 7天:
-                $.cookie("token", data.data,{ expires: 7 });
+                $.cookie("Authorization", data.data,{ expires: 7 });
                 $.alert({
                     title: '提示信息',
                     content: "用户：" + userName + "登录成功",
@@ -189,6 +190,7 @@
             $("#chat").hide();
             // 登录
             $("#login").on("click",function () {
+                $("#password").val(hex_md5($.trim($("#password").val())));
                 var userName = $.trim($("#userName").val());
                 var password = $.trim($("#password").val());
                 // 去登录
@@ -197,6 +199,7 @@
 
             // 注册
             $("#register").on("click",function () {
+                $("#password").val(hex_md5($.trim($("#password").val())));
                 var userName = $.trim($("#userName").val());
                 var password = $.trim($("#password").val());
                 // 去注册
