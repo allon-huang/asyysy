@@ -101,7 +101,7 @@ public class CommonController extends BaseController {
             if (StringUtils.isEmpty(name)) {
                throw new BaseException("请输入需要查询的名字");
             }
-            Map<String, String> map = new HashMap<>();
+            Map<String, String> map = new HashMap<String, String>(1);
             map.put("name", name);
             // 辽宁公安重名查询
             String result = HttpClientUtil.doGet("https://m.zwfw.gat.ln.gov.cn//api/query/countName", map);
