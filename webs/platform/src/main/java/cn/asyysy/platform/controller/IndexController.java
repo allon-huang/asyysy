@@ -11,13 +11,12 @@ import cn.asyysy.app.service.short_url.ShortUrlService;
 import cn.asyysy.app.service.user.UserService;
 import cn.asyysy.app.service.user.WxReplyModelService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -43,6 +42,7 @@ public class IndexController extends BaseController {
 
     @PassToken
     @RequestMapping(value = "index")
+    @ApiOperation(value = "index", hidden = true)
     public String index(@RequestParam Map<String,Object> params, HttpServletRequest request) {
         // 微信回复模板
         List<WxReplyModel> wxReplys =  wxReplyModelService.selectWxReplyModelList();
@@ -60,11 +60,13 @@ public class IndexController extends BaseController {
 
     @PassToken
     @RequestMapping(value = "h5")
+    @ApiOperation(value = "h5", hidden = true)
     public String index1(@RequestParam Map<String,Object> params, HttpServletRequest request) {
         return  "h5";
     }
 
     @RequestMapping(value = "chat")
+    @ApiOperation(value = "chat", hidden = true)
     public String chat(@RequestParam Map<String,Object> params, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute(BaseConsts.COMMON.SESSION_API_USER_KEY);
@@ -77,7 +79,7 @@ public class IndexController extends BaseController {
         return  "chat";
     }
 
-    @RequestMapping(value = "chatList")
+    @PostMapping(value = "chatList")
     @ResponseBody
     public Object chatList(HttpServletRequest request, @RequestBody User vo) {
         HttpSession session = request.getSession();
@@ -95,7 +97,16 @@ public class IndexController extends BaseController {
 
     @PassToken
     @RequestMapping(value = "api")
+    @ApiOperation(value = "api", hidden = true)
     public String api(){
-        return "redirect:/documentation/swagger-ui.html";
+//        return "redirect:/documentation/swagger-ui.html";
+        return "redirect:/doc.html";
+    }
+
+    @PassToken
+    @RequestMapping("/login")
+    @ApiOperation(value = "login", hidden = true)
+    public String login(HttpServletRequest request) {
+        return "login";
     }
 }

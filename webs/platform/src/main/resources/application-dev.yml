@@ -1,7 +1,7 @@
 domain:
-  # domain http://localhost:8080//asyysy_core
+  domain: http://localhost
   # https://www.asyysy.cn/asyysy_core
-  domain: https://www.asyysy.cn/asyysy_core
+#  domain: https://www.asyysy.cn/asyysy_core
   short-url:
     domain: http://d.asyysy.cn
   tianqiapi_com:
@@ -19,19 +19,20 @@ domain:
     app_key: 0c157ca044b8f179fb167f3eb362faf3
     redirect_uri: http://yysy.wicp.net/asyysy_core/api/qq/callback
 server:
-  port: 8080
+  port: 80
   servlet:
-    context-path: /asyysy_core
+    context-path: /
 spring:
   datasource:
     platform: mysql
-    driver-class-name: com.mysql.jdbc.Driver
-    password: 123123112233
-    url: jdbc:mysql://localhost:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://aliyun.asyysy.cn:3306/asyysy_core?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
+    password: 123123112233
     type: com.alibaba.druid.pool.DruidDataSource
-    #   数据源其他配置
     initialSize: 5
+    #   数据源其他配置
     minIdle: 5
     maxActive: 20
     maxWait: 60000
@@ -61,3 +62,10 @@ spring:
     timeout: 300
   thymeleaf:
     cache: false
+
+  knife4j:
+    enable: true
+    setting:
+      enableFooter: false
+      enableFooterCustom: true
+      footerCustomContent: asyysy.cn

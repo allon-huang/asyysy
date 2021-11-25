@@ -26,8 +26,7 @@ public class ShortUrlInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
         // 当前请求路径
         String requestUrl = request.getScheme()+"://" + request.getServerName();
-        // 是否短网址请求
-        boolean result = requestUrl.equals(shortUrlDomain);
+
         //String url = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
         //logger.info("获取全路径（协议类型：//域名/项目名/命名空间/action名称?其他参数）url={}", url);
         //+request.getRequestURI();
@@ -40,11 +39,12 @@ public class ShortUrlInterceptor extends HandlerInterceptorAdapter {
         logger.info("获取web项目的路径="+request.getSession().getServletContext().getRealPath("/"));
         //获取类的当前目录
         logger.info("获取类的当前目录="+this.getClass().getResource("/").getPath());*/
+        if (request.getRequestURI().indexOf("/d/") > -1) {
+            return true;
+        }
+        // 是否短网址请求
+        boolean result = requestUrl.equals(shortUrlDomain);
         if(result) {
-            // 已是短网址路径直接可访问
-            if(request.getRequestURL().toString().contains("/d/")) {
-                return true;
-            }
             // 转发到短网址
             response.sendRedirect("/d");
         }

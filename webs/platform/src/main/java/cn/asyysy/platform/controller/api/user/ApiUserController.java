@@ -235,7 +235,7 @@ public class ApiUserController {
     }
 
     @UserToken
-    @RequestMapping("logout")
+    @GetMapping("logout")
     public ApiResponse  logout(HttpServletRequest request){
 
         // 已登录获取user
@@ -294,7 +294,7 @@ public class ApiUserController {
      * @return
      */
     @PassToken
-    @RequestMapping("getUser")
+    @GetMapping("getUser")
     public ApiResponse getUser(HttpServletRequest request){
         try{
             // 校验是否登录
@@ -315,7 +315,7 @@ public class ApiUserController {
      * @return
      */
     @PassToken
-    @PostMapping("getOnLineCount")
+    @GetMapping("getOnLineCount")
     public ApiResponse getOnLineCount(HttpServletRequest request){
         // 在线人数
         AtomicInteger userCount = SessionListener.userCount;

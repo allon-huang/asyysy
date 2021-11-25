@@ -87,15 +87,15 @@
         </div>
 
         <!-- ncp疫情信息-->
-        <div class="margin_top_20" style="text-align: left">
-            <span id="ncpInfo"></span>
-        </div>
+<!--        <div class="margin_top_20" style="text-align: left">-->
+<!--            <span id="ncpInfo"></span>-->
+<!--        </div>-->
         <!-- 为ECharts准备一个具备大小（宽高）的Dom 确诊病例 -->
-        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>
+<!--        <div id="ncp_confirmed_ount" class="margin_top_20 ncp_chart"></div>-->
         <!-- 为ECharts准备一个具备大小（宽高）的Dom 治愈病例 -->
-        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>
+<!--        <div id="ncp_cured_count" class="margin_top_20 ncp_chart"></div>-->
         <!-- 为ECharts准备一个具备大小（宽高）的Dom 死亡病例 -->
-        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>
+<!--        <div id="ncp_dead_count" class="margin_top_20 ncp_chart"></div>-->
 
         <table border="1">
             <tr>
@@ -137,7 +137,7 @@
         </table>
 
         <div style="margin-top: 20px;">
-            长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sys.domain }]]</textarea> <button onclick="saveShortUrl()">保存长网址</button>
+            长网址 ： <textarea id="long_url" placeholder="请输入想要转换的长网址" style="margin-bottom: -11px;">[[${sys.domain }]]</textarea> <button onclick="javascript:saveShortUrl(document.getElementById('long_url').value);">保存长网址</button>
             <br><span id="short_url"></span>
         </div>
 

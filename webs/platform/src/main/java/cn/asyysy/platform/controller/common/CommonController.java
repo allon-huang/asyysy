@@ -38,7 +38,7 @@ public class CommonController extends BaseController {
      * @return
      */
     @PassToken
-    @RequestMapping("sysInfo")
+    @PostMapping("sysInfo")
     public Object getSysInfo(){
         try {
             return ApiResponse.SUCCESS("获取系统信息成功", systemInfo());
@@ -46,8 +46,8 @@ public class CommonController extends BaseController {
             logger.error(e.getMessage(), e);
             return ApiResponse.ERROR(e.getMessage());
         } catch (Exception e){
-            logger.error("保存短网址异常:{}", e.getMessage(), e);
-            return ApiResponse.ERROR("保存短网址异常", e);
+            logger.error("获取系统信息异常:{}", e.getMessage(), e);
+            return ApiResponse.ERROR("获取系统信息异常", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class CommonController extends BaseController {
      * @return
      */
     @PassToken
-    @RequestMapping("wxConfig")
+    @PostMapping("wxConfig")
     public Object getWxConfig(){
         try {
             Object wxConfig = redisBaseService.get(BaseConsts.REDIS_KEY.WX_INFO);
@@ -75,7 +75,7 @@ public class CommonController extends BaseController {
      * @return
      */
     @PassToken
-    @RequestMapping("ncpInfo")
+    @PostMapping("ncpInfo")
     public Object getNcpInfo(HttpServletResponse response){
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -95,7 +95,7 @@ public class CommonController extends BaseController {
      * @return
      */
     @PassToken
-    @RequestMapping("getCommonName")
+    @PostMapping("getCommonName")
     public ApiResponse getCommonName(@RequestBody Map<String, String> params){
         try {
             String name = params.get("name");
@@ -123,8 +123,7 @@ public class CommonController extends BaseController {
      * @param content 邮件正文内容
      * @return
      */
-    @RequestMapping(value = "/mail")
-    @ResponseBody
+    @PostMapping(value = "/mail")
     public Object mail(@RequestParam("mail") String mail, @RequestParam("title")String title, @RequestParam("content")String content){
         DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {

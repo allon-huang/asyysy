@@ -816,13 +816,14 @@ function wxFun(data) {
  * @param longUrl
  */
 function saveShortUrl(longUrl){
-    var longUrl = $("#long_url").val();
     if(null == longUrl || "" == $.trim(longUrl)){
         alert("长网址不可为空");
         return;
     }
     $("#short_url").html("");
-    common.ajaxPostJson(domain + "/d/saveUrl",null,function (data) {
+    common.ajaxPostJson(domain + "/d/saveUrl",JSON.stringify({
+        longUrl:longUrl,
+    }),function (data) {
         var  html ="短网址：";
         html += '<a id="short_url_a" href="' + data.data.shortUrl +'" target="_blank">点击这里</a>'
         html += "<br><span>" + data.data.shortUrl + "</span>";

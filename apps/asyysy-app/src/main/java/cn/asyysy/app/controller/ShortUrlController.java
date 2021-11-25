@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  * 短网址-前台控制器
  * @author hyy
  */
-@Controller
-@RequestMapping("d")
+@RestController
+@RequestMapping("/d")
 public class ShortUrlController extends BaseController {
     /** log日志. */
     private static Logger logger = (Logger) LoggerFactory.getLogger(ShortUrlController.class);
@@ -29,9 +26,8 @@ public class ShortUrlController extends BaseController {
     @Autowired
     private ShortUrlService shortUrlService;
 
-    @RequestMapping(value = "saveUrl")
-    @ResponseBody
-    public Object saveUrl(@RequestParam String longUrl){
+    @PostMapping(value = "saveUrl")
+    public ApiResponse saveUrl(@RequestParam String longUrl){
         try {
             // 保存短网址
             ShortUrl data = shortUrlService.save(longUrl);
@@ -45,9 +41,8 @@ public class ShortUrlController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/{shortUrl}")
-    @ResponseBody
-    public Object shortUrl(HttpServletResponse response, @PathVariable (value="shortUrl") String shortUrl){
+    @GetMapping(value = "/{shortUrl}")
+    public ApiResponse shortUrl(HttpServletResponse response, @PathVariable (value="shortUrl") String shortUrl){
         try{
             // 是否存在短网址
             ShortUrl d =  shortUrlService.getByShortUrl(shortUrl);

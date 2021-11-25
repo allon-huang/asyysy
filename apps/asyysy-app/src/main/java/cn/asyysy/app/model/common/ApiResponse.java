@@ -1,10 +1,14 @@
 package cn.asyysy.app.model.common;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
  * api返回结果响应实体类
  * @author hyy
  */
+@ApiModel(value = "api返回结果响应实体类", description = "api返回结果响应实体类")
 public class ApiResponse implements Serializable {
 
     /**
